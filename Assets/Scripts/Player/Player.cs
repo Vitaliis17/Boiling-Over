@@ -8,15 +8,16 @@ public class Player : MonoBehaviour
     [SerializeField, Min(0)] private float _speed;
     [SerializeField, Min(0)] private float _jumpingForce;
 
+    [SerializeField] private float _minY;
+    [SerializeField] private float _maxY;
+
+    [SerializeField] private float _sensitivity;
+
     private Rigidbody _rigidbody;
 
     private Mover _mover;
     private Jumper _jumper;
-
-    private void OnDrawGizmos()
-    {
-        Debug.DrawRay(transform.position, transform.forward * 2);
-    }
+    private Rotater _rotater;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
 
         _mover = new(_speed, _rigidbody, transform);
         _jumper = new(_jumpingForce, _rigidbody);
+        _rotater = new(_sensitivity, _maxY, _minY);
     }
 
     private void OnEnable()
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour
         _inputReader.MovePerformed += _mover.Move;
         _inputReader.JumpingPerformed += _jumper.Jump;
         _inputReader.InteractivePerformed += Interacte;
+
+        _inputReader.LookPerformed += RotateX;
     }
 
     private void OnDisable()
@@ -39,6 +43,8 @@ public class Player : MonoBehaviour
         _inputReader.MovePerformed -= _mover.Move;
         _inputReader.JumpingPerformed -= _jumper.Jump;
         _inputReader.InteractivePerformed -= Interacte;
+
+        _inputReader.LookPerformed -= RotateX;
     }
 
     private void Interacte()
@@ -48,4 +54,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 20f, 1 << (int)CustomeLayerMasks.Interactable))
             hit.transform.GetComponent<IInteractable>().Interact();
     }
+
+    private void RotateX(Vector2 direction)
+        => _rotater.RotateX(transform, direction);
 }

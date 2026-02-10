@@ -3,10 +3,7 @@ using DG.Tweening;
 
 public class Door : MonoBehaviour, IInteractable
 {
-    [SerializeField] private float _closeRotatation;
-    [SerializeField] private float _openRotatation;
-
-    [SerializeField, Min(0)] private float _animationDuration;
+    [SerializeField] private DoorData _data;
 
     private CustomeLayerMasks _mask;
     private DoorStates _currentState;
@@ -35,18 +32,18 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Open()
     {
-        DOLocalRotation(Vector3.up * _openRotatation);
+        DOLocalRotation(_data.OpenRotation);
 
         _currentState = DoorStates.Opened;
     }
 
     private void Close()
     {
-        DOLocalRotation(Vector3.up * _closeRotatation);
+        DOLocalRotation(_data.CloseRotation);
 
         _currentState = DoorStates.Closed;
     }
 
     private void DOLocalRotation(Vector3 rotation)
-        => transform.DOLocalRotate(rotation, _animationDuration);
+        => transform.DOLocalRotate(rotation, _data.AnimationDuration);
 }
