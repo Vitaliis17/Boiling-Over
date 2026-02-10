@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   _inputReader: {fileID: 0}
   _rotationData: {fileID: 11400000, guid: 5e6c8e84afecaba458fe9ff6bbdf6726, type: 2}
+  _interacter: {fileID: 7680662621489944516}
   _speed: 3
   _jumpingForce: 200
 --- !u!1 &8566126983779925067
@@ -169,6 +170,7 @@ GameObject:
   - component: {fileID: 929651190066272359}
   - component: {fileID: 8698051086398442783}
   - component: {fileID: 4638737287686277879}
+  - component: {fileID: 7680662621489944516}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -185,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 8566126983779925067}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7596276, z: -0, w: 0.6503583}
-  m_LocalPosition: {x: -1, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 2, y: 20, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -264,3 +266,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VerticalRotater
   _inputReader: {fileID: 0}
   _rotationData: {fileID: 11400000, guid: 5e6c8e84afecaba458fe9ff6bbdf6726, type: 2}
+--- !u!114 &7680662621489944516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566126983779925067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e13f89c3a0a774187ab8d89e2b6a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interacter

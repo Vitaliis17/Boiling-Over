@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RotationData
   _sensitivityX: 1.5
   _sensitivityY: 1.5
-  _maxY: 50
+  _maxY: 30
   _minY: -50
