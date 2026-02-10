@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec26d7bc9e9987a4bb8c73411146a514, type: 3}
+  m_Name: RotationData
+  m_EditorClassIdentifier: Assembly-CSharp::RotationData
+  _sensitivityX: 1.5
+  _sensitivityY: 1.5
+  _maxY: 50
+  _minY: -50

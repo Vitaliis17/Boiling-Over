@@ -3,23 +3,16 @@ using UnityEngine;
 public class VerticalRotater : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
-
-    [SerializeField] private float _minY;
-    [SerializeField] private float _maxY;
-
-    [SerializeField] private float _sensitivity;
+    [SerializeField] private RotationData _rotationData;
 
     private Rotater _rotater;
     
     private void Awake()
-        => _rotater = new(_sensitivity, _maxY, _minY);
+        => _rotater = new(_rotationData, transform);
 
     private void OnEnable()
-        => _inputReader.LookPerformed += RotateY;
+        => _inputReader.LookPerformed += _rotater.RotateY;
 
     private void OnDisable()
-        => _inputReader.LookPerformed -= RotateY;
-
-    private void RotateY(Vector2 direction)
-        => _rotater.RotateY(transform, direction);
+        => _inputReader.LookPerformed -= _rotater.RotateY;
 }

@@ -2,31 +2,27 @@ using UnityEngine;
 
 public class Rotater
 {
-    private readonly float _sensitivity;
-
-    private readonly float _maxY;
-    private readonly float _minY;
+    private readonly RotationData _rotationData;
+    private readonly Transform _transform;
 
     private float _rotationX;
 
-    public Rotater(float sensitivity, float maxY, float minY)
+    public Rotater(RotationData rotationData, Transform transform)
     {
-        _sensitivity = sensitivity;
-
-        _maxY = maxY;
-        _minY = minY;
+        _rotationData = rotationData;
+        _transform = transform;
 
         _rotationX = 0;
     }
 
-    public void RotateY(Transform transform, Vector2 rotation)
+    public void RotateY(Vector2 rotation)
     {
-        _rotationX -= rotation.y * _sensitivity * Time.fixedDeltaTime;
-        _rotationX = Mathf.Clamp(_rotationX, _minY, _maxY);
+        _rotationX -= rotation.y * _rotationData.SensitivityY * Time.fixedDeltaTime;
+        _rotationX = Mathf.Clamp(_rotationX, _rotationData.MinY, _rotationData.MaxY);
 
-        transform.localRotation = Quaternion.Euler(_rotationX, transform.rotation.y, transform.rotation.z);
+        _transform.localRotation = Quaternion.Euler(_rotationX, _transform.rotation.y, _transform.rotation.z);
     }
 
-    public void RotateX(Transform transform, Vector2 rotation)
-        => transform.Rotate(Vector3.up * rotation.x * _sensitivity * Time.fixedDeltaTime);
+    public void RotateX(Vector2 rotation)
+        => _transform.Rotate(Vector3.up * rotation.x * _rotationData.SensitivityX * Time.fixedDeltaTime);
 }
