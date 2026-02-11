@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 4434496311129384879}
   - component: {fileID: 8149924353738714811}
   - component: {fileID: 4978659394566166877}
+  - component: {fileID: 2492440882205260982}
   m_Layer: 0
   m_Name: Glass.003
   m_TagString: Untagged
@@ -305,3 +306,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
   _data: {fileID: 11400000, guid: 50498f9b12412574dbcd47c03aa9a4f9, type: 2}
+--- !u!208 &2492440882205260982
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942830690319771598}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.92700005, y: 1.6450001, z: 0.061000004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: -0.91600007, y: 1.6340001, z: -0.061000004}
+  m_TimeToStationary: 0.5

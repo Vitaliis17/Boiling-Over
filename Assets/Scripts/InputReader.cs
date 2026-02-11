@@ -20,7 +20,7 @@ public class InputReader : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputSystem.Enable();
+        _inputSystem.Player.Enable();
 
         _inputSystem.Player.Jump.performed += InvokeJumping;
         _inputSystem.Player.Interactive.performed += InvokeInteractive;
@@ -28,7 +28,7 @@ public class InputReader : MonoBehaviour
 
     private void OnDisable()
     {
-        _inputSystem.Disable();
+        _inputSystem.Player.Disable();
 
         _inputSystem.Player.Jump.performed -= InvokeJumping;
         _inputSystem.Player.Interactive.performed -= InvokeInteractive;
