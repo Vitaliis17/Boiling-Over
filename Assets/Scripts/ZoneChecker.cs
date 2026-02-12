@@ -9,6 +9,7 @@ public class ZoneChecker : MonoBehaviour
     private BoxCollider _collider;
 
     public event Action<Player> PlayerFinded;
+    public event Action PlayerEscaped;
 
     private void Awake()
     {
@@ -25,5 +26,14 @@ public class ZoneChecker : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out RaycastHit hit, _collider.size.z) && hit.transform.TryGetComponent(out Player player))
             PlayerFinded?.Invoke(player);
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (1 << other.gameObject.layer != _targetLayers.value)
+            return;
+
+        PlayerEscaped?.Invoke();
     }
 }

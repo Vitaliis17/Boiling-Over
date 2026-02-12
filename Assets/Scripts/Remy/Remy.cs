@@ -1,22 +1,26 @@
 using UnityEngine;
-using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class Remy : MonoBehaviour
 {
     [SerializeField] private ZoneChecker _sightZone;
+    [SerializeField] private AgentAnimationData _agentAnimationData;
 
-    private NavMeshAgent _agent;
+    [SerializeField] AgentMovement _movement;
+
+    private AnimationStateMachine _animationStateMachine;
 
     private void Awake()
-     => _agent = GetComponent<NavMeshAgent>();
+    {
+        GetComponent<Rigidbody>().freezeRotation = true;
+
+        Animator animator = GetComponent<Animator>();
+        _animationStateMachine = new(animator, _agentAnimationData);
+    }
 
     private void OnEnable()
-        => _sightZone.PlayerFinded += SetDestination;
+        => _movement.StateChanged += _animationStateMachine.ChangeState;
 
     private void OnDisable()
-        => _sightZone.PlayerFinded -= SetDestination;
-
-    private void SetDestination(Player player)
-        => _agent.destination = player.transform.position;
+        => _movement.StateChanged -= _animationStateMachine.ChangeState;
 }
