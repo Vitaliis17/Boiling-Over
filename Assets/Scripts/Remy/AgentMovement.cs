@@ -13,8 +13,10 @@ public class AgentMovement : MonoBehaviour
     private bool _havePath;
 
     private Coroutine _coroutine;
+    private Vector3 _target;
 
     public event Action<States> StateChanged;
+    public event Action Reached;
 
     private void Awake()
     {
@@ -35,8 +37,14 @@ public class AgentMovement : MonoBehaviour
         _havePath = _agent.SetDestination(position);
 
         if (_havePath)
+        {
             StateChanged?.Invoke(States.Walking);
+            _target = position;
+        }
     }
+
+    public void SetLooking(Quaternion rotation)
+        => transform.rotation = rotation;
 
     private IEnumerator CheckWalking()
     {
@@ -46,10 +54,13 @@ public class AgentMovement : MonoBehaviour
 
         while (enabled)
         {
-            if(_havePath && _agent.isStopped)
+            if (_havePath && _agent.remainingDistance <= _agent.stoppingDistance)
             {
                 _havePath = false;
-                StateChanged?.Invoke(States.Idle);
+                _agent.enabled = false;
+                GetComponent<Rigidbody>().isKinematic = true;
+                transform.position = _target;
+                Reached?.Invoke();
             }
 
             yield return waitingTime;

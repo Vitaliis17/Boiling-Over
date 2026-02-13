@@ -14,7 +14,6 @@ public class RemyPresenter : MonoBehaviour
     private WorkingStateMachine _workingStateMachine;
     private AnimationStateMachine _animationStateMachine;
 
-
     private void Awake()
     {
         _workingStateMachine = new();
@@ -27,11 +26,19 @@ public class RemyPresenter : MonoBehaviour
         _agentMovement.StateChanged += _animationStateMachine.ChangeState;
 
         _workingStateMachine.Initialize(_places);
+
+        _agentMovement.Reached += _workingStateMachine.CurrentPlace.Interact;
+        _workingStateMachine.CurrentPlace.StartInteracting += _animationStateMachine.ChangeState;
+        _workingStateMachine.CurrentPlace.ContinueInteracting += _agentMovement.SetLooking;
     }
 
     private void OnDisable()
     {
         _workingStateMachine.PlaceChanged -= _agentMovement.SetDestination;
         _agentMovement.StateChanged -= _animationStateMachine.ChangeState;
+
+        _agentMovement.Reached -= _workingStateMachine.CurrentPlace.Interact;
+        _workingStateMachine.CurrentPlace.StartInteracting -= _animationStateMachine.ChangeState;
+        _workingStateMachine.CurrentPlace.ContinueInteracting -= _agentMovement.SetLooking;
     }
 }

@@ -11,6 +11,6 @@ public class State
         _animationHash = animationHash;
     }
 
-    public void Start()
-        => _animator.Play(_animationHash);
+    public void Start(int layer)
+        => _animator.Play(_animationHash, layer);
 }

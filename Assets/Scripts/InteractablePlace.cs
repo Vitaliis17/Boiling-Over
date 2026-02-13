@@ -1,6 +1,16 @@
+using System;
 using UnityEngine;
 
-public abstract class InteractablePlace : MonoBehaviour
+public class InteractablePlace : MonoBehaviour
 {
-    public abstract void Interact();
+    [SerializeField] private States State;
+
+    public event Action<States> StartInteracting;
+    public event Action<Quaternion> ContinueInteracting;
+
+    public void Interact()
+    {
+        StartInteracting?.Invoke(State);
+        ContinueInteracting?.Invoke(transform.rotation);
+    }
 }

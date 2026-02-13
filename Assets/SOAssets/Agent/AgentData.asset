@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593913d2d1c93d347a16906ca1b45547, type: 3}
   m_Name: AgentData
   m_EditorClassIdentifier: Assembly-CSharp::AgentData
-  _stoppingDistance: 2.2
+  _stoppingDistance: 0
   _speed: 2.3

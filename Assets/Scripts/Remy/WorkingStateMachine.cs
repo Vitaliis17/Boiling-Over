@@ -5,7 +5,7 @@ public class WorkingStateMachine
 {
     private InteractablePlace[] _places;
 
-    private InteractablePlace _currentPlace;
+    public InteractablePlace CurrentPlace { get; private set; }
 
     public Action<Vector3> PlaceChanged;
 
@@ -19,7 +19,7 @@ public class WorkingStateMachine
 
         int index = UnityEngine.Random.Range(MinIndex, _places.Length);
 
-        if(_currentPlace == _places[index])
+        if(CurrentPlace == _places[index])
             index = index == (_places.Length - 1) ? index-- : index++;
 
         ChangePlace(_places[index]);
@@ -37,7 +37,7 @@ public class WorkingStateMachine
 
     private void ChangePlace(InteractablePlace place)
     {
-        _currentPlace = place;
+        CurrentPlace = place;
         
         if (place is Component component)
             PlaceChanged?.Invoke(component.transform.position);
