@@ -3,43 +3,24 @@ using System;
 
 public class WorkingStateMachine
 {
-    private InteractablePlace[] _places;
+    private InteractablePlace _currentPlace;
 
-    public InteractablePlace CurrentPlace { get; private set; }
+    public event Action<Vector3> PlaceChanged;
+    public event Action<Quaternion> RotationChanged;
+    public event Action<States> StateChanged;
 
-    public Action<Vector3> PlaceChanged;
-
-    public void SetRandomCurrentPlace()
+    public void SetCurrentPlace(InteractablePlace place)
     {
-        const int MinIndex = 0;
-        const int MinElementAmount = 2;
+        _currentPlace = place;
 
-        if (_places.Length < MinElementAmount)
-            return;
-
-        int index = UnityEngine.Random.Range(MinIndex, _places.Length);
-
-        if(CurrentPlace == _places[index])
-            index = index == (_places.Length - 1) ? index-- : index++;
-
-        ChangePlace(_places[index]);
+        PlaceChanged?.Invoke(place.transform.position);
     }
 
-    public void Initialize(InteractablePlace[] places)
+    public void Interact()
     {
-        _places = new InteractablePlace[places.Length];
+        _currentPlace.Interact();
 
-        for(int i = 0; i < places.Length; i++)
-            _places[i] = places[i];
-
-        SetRandomCurrentPlace();
-    }
-
-    private void ChangePlace(InteractablePlace place)
-    {
-        CurrentPlace = place;
-        
-        if (place is Component component)
-            PlaceChanged?.Invoke(component.transform.position);
+        StateChanged?.Invoke(_currentPlace.State);
+        RotationChanged?.Invoke(_currentPlace.transform.rotation);
     }
 }

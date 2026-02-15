@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Rigidbody))]
 public class AgentMovement : MonoBehaviour
 {
     [SerializeField] private AgentData _data;
@@ -15,7 +15,7 @@ public class AgentMovement : MonoBehaviour
     private Coroutine _coroutine;
     private Vector3 _target;
 
-    public event Action<States> StateChanged;
+    public event Action<States> WalkingStarted;
     public event Action Reached;
 
     private void Awake()
@@ -38,13 +38,16 @@ public class AgentMovement : MonoBehaviour
 
         if (_havePath)
         {
-            StateChanged?.Invoke(States.Walking);
+            WalkingStarted?.Invoke(States.Walking);
             _target = position;
         }
     }
 
-    public void SetLooking(Quaternion rotation)
-        => transform.rotation = rotation;
+    public void Activate()
+        => _agent.enabled = true;
+
+    private void Deactivate()
+        => _agent.enabled = false;
 
     private IEnumerator CheckWalking()
     {
@@ -54,11 +57,11 @@ public class AgentMovement : MonoBehaviour
 
         while (enabled)
         {
-            if (_havePath && _agent.remainingDistance <= _agent.stoppingDistance)
+            if (_havePath && _agent.pathPending == false && _agent.remainingDistance <= _agent.stoppingDistance)
             {
+                Deactivate();
+
                 _havePath = false;
-                _agent.enabled = false;
-                GetComponent<Rigidbody>().isKinematic = true;
                 transform.position = _target;
                 Reached?.Invoke();
             }
