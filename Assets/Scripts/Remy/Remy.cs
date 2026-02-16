@@ -1,8 +1,10 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(Animator))]
+[RequireComponent(typeof(Rigidbody))]
 public class Remy : MonoBehaviour
 {
+    [SerializeField] private ZoneChecker _sight;
+
     private Rigidbody _rigidbody;
 
     private void Awake()

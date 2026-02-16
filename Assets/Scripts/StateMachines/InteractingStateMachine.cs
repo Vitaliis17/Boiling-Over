@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class WorkingStateMachine
+public class InteractingStateMachine
 {
     private readonly TargetTypes _targetType;
     
@@ -11,7 +11,7 @@ public class WorkingStateMachine
     public event Action<Quaternion> RotationChanged;
     public event Action<MovementActions> StateChanged;
 
-    public WorkingStateMachine()
+    public InteractingStateMachine()
         => _targetType = TargetTypes.Place;
 
     public void SetCurrentPlace(InteractablePlace place)

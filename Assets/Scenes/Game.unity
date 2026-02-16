@@ -15223,6 +15223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf32de681d2ede45b02bbe204700514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Remy
+  _sight: {fileID: 0}
 --- !u!4 &227800678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1129999413580534391, guid: edb02028d59ccac4ca6641a183fa7346, type: 3}
@@ -73140,6 +73141,7 @@ MonoBehaviour:
   - {fileID: 650604024}
   _agentAnimationData: {fileID: 11400000, guid: 7ed9e966c1bf4f1438797d4843d934bd, type: 2}
   _remy: {fileID: 226614411}
+  _sight: {fileID: 0}
   _agentMovement: {fileID: 226614405}
   _animator: {fileID: 226614409}
 --- !u!4 &1161611019

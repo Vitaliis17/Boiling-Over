@@ -15,6 +15,7 @@ public class TargetStateMachine
     public event Action<MovementActions> MovementStarted;
     public event Action Reached;
     public event Action<Vector3> Transfering;
+    public event Action<TargetTypes> Interacting;
 
     public TargetStateMachine(NavMeshAgent agent)
     {
@@ -52,6 +53,8 @@ public class TargetStateMachine
 
             if (_pursuers[_currentTargetType].HavePath == false)
             {
+                Interacting?.Invoke(_currentTargetType);
+
                 Reached?.Invoke();
                 Transfering?.Invoke(_pursuers[_currentTargetType].TargetPosition);
 

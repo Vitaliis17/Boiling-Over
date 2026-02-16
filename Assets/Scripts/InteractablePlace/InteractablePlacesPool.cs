@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-public class InteractablePlacesFabric
+public class InteractablePlacesPool
 {
     private List<InteractablePlace> _places;
 
-    public event Action<InteractablePlace> PlaceActivated;
+    public event Action<InteractablePlace> Activated;
     public event Action PlaceDeactivated;
 
     public void Initialize(InteractablePlace[] places)
@@ -21,6 +21,7 @@ public class InteractablePlacesFabric
     public void ActivatePlace()
     {
         InteractablePlace place = GetRandomPlace();
+
         if (place == null)
             return;
 
@@ -28,7 +29,7 @@ public class InteractablePlacesFabric
         _places.Remove(place);
 
         place.Releasing += Release;
-        PlaceActivated?.Invoke(place);
+        Activated?.Invoke(place);
     }
 
     public void Release(InteractablePlace place)
