@@ -5,13 +5,13 @@ using UnityEngine;
 public class InteractablePlace : MonoBehaviour
 {
     [SerializeField] private TimerData _timerData;
-    [SerializeField] private States _state;
+    [SerializeField] private MovementActions _state;
 
     private Coroutine _coroutine;
 
     public event Action<InteractablePlace> Releasing;
 
-    public States State => _state;
+    public MovementActions State => _state;
 
     private void OnDisable()
         => StopCoroutine();
@@ -19,7 +19,6 @@ public class InteractablePlace : MonoBehaviour
     public void Interact()
     {
         StopCoroutine();
-
         _coroutine = StartCoroutine(SetInteractTimer());
     }
 

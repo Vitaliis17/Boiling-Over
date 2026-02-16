@@ -21,7 +21,6 @@ public class InteractablePlacesFabric
     public void ActivatePlace()
     {
         InteractablePlace place = GetRandomPlace();
-
         if (place == null)
             return;
 

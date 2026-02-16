@@ -10,10 +10,10 @@ public class AgentAnimationData : ScriptableObject
 
     private void Awake()
     {
-        IdleHash = SetHash(nameof(States.Idle));
-        WalkingHash = SetHash(nameof(States.Walking));
-        RunningHash = SetHash(nameof(States.Running));
-        SittingHash = SetHash(nameof(States.Sitting));
+        IdleHash = SetHash(nameof(MovementActions.Idle));
+        WalkingHash = SetHash(nameof(MovementActions.Walking));
+        RunningHash = SetHash(nameof(MovementActions.Running));
+        SittingHash = SetHash(nameof(MovementActions.Sitting));
     }
 
     private int SetHash(string animationName)

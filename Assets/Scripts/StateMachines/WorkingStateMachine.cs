@@ -3,17 +3,22 @@ using System;
 
 public class WorkingStateMachine
 {
+    private readonly TargetTypes _targetType;
+    
     private InteractablePlace _currentPlace;
 
-    public event Action<Vector3> PlaceChanged;
+    public event Action<Vector3, TargetTypes> PlaceChanged;
     public event Action<Quaternion> RotationChanged;
-    public event Action<States> StateChanged;
+    public event Action<MovementActions> StateChanged;
+
+    public WorkingStateMachine()
+        => _targetType = TargetTypes.Place;
 
     public void SetCurrentPlace(InteractablePlace place)
     {
         _currentPlace = place;
 
-        PlaceChanged?.Invoke(place.transform.position);
+        PlaceChanged?.Invoke(place.transform.position, _targetType);
     }
 
     public void Interact()

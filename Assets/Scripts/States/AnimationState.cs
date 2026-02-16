@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class State
+public class AnimationState
 {
     private readonly Animator _animator;
     private readonly int _animationHash;
 
-    public State(Animator animator, int animationHash)
+    public AnimationState(Animator animator, int animationHash)
     {
         _animator = animator;
         _animationHash = animationHash;

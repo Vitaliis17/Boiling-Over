@@ -1,4 +1,4 @@
-public enum States
+public enum MovementActions
 {
     Idle = 0,
     Walking = 1,
