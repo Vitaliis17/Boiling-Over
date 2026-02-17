@@ -135,13 +135,13 @@
             ]
         },
         {
-            "name": "Remy",
-            "id": "e96e464d-c193-4b8c-9c14-cb7f3a097ba0",
+            "name": "Game",
+            "id": "d2265639-9322-47a5-a31a-8c5d910022fa",
             "actions": [
                 {
-                    "name": "Movement",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "6fb73921-8e48-4685-bdc7-df102f8b41d7",
+                    "id": "cf9ed4ff-a061-46b9-be44-95df46329c7d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -151,12 +151,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "d7e4762d-c5eb-47ea-b572-9ed5131ca723",
-                    "path": "<Mouse>/leftButton",
+                    "id": "ee033cc4-ecaa-4b36-bb79-baedd57b8181",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

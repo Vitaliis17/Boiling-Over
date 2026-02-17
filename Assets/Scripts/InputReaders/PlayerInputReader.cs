@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+public class PlayerInputReader : MonoBehaviour
 {
-    private InputSystem _inputSystem;
+    private InputSystem.PlayerActions _action;
 
     private Vector2 _moveDirection;
     private Vector2 _lookDirection;
@@ -16,28 +16,28 @@ public class InputReader : MonoBehaviour
     public event Action InteractivePerformed;
 
     private void Awake()
-        => _inputSystem = new();
+        => _action = new InputSystem().Player;
 
     private void OnEnable()
     {
-        _inputSystem.Player.Enable();
+        _action.Enable();
 
-        _inputSystem.Player.Jump.performed += InvokeJumping;
-        _inputSystem.Player.Interactive.performed += InvokeInteractive;
+        _action.Jump.performed += InvokeJumping;
+        _action.Interactive.performed += InvokeInteractive;
     }
 
     private void OnDisable()
     {
-        _inputSystem.Player.Disable();
+        _action.Disable();
 
-        _inputSystem.Player.Jump.performed -= InvokeJumping;
-        _inputSystem.Player.Interactive.performed -= InvokeInteractive;
+        _action.Jump.performed -= InvokeJumping;
+        _action.Interactive.performed -= InvokeInteractive;
     }
 
     private void Update()
     {
-        _moveDirection = _inputSystem.Player.Movement.ReadValue<Vector2>();
-        _lookDirection = _inputSystem.Player.Look.ReadValue<Vector2>();
+        _moveDirection = _action.Movement.ReadValue<Vector2>();
+        _lookDirection = _action.Look.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()

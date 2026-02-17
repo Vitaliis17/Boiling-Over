@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private PlayerInputReader _inputReader;
     [SerializeField] private RotationData _rotationData;
 
     [SerializeField] private Interacter _interacter;

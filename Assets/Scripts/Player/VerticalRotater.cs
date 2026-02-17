@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VerticalRotater : MonoBehaviour
 {
-    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private PlayerInputReader _inputReader;
     [SerializeField] private RotationData _rotationData;
 
     private Rotater _rotater;

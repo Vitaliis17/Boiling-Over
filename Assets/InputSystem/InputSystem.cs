@@ -221,13 +221,13 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Remy"",
-            ""id"": ""e96e464d-c193-4b8c-9c14-cb7f3a097ba0"",
+            ""name"": ""Game"",
+            ""id"": ""d2265639-9322-47a5-a31a-8c5d910022fa"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""6fb73921-8e48-4685-bdc7-df102f8b41d7"",
+                    ""id"": ""cf9ed4ff-a061-46b9-be44-95df46329c7d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -237,12 +237,12 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""d7e4762d-c5eb-47ea-b572-9ed5131ca723"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""ee033cc4-ecaa-4b36-bb79-baedd57b8181"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -257,15 +257,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Interactive = m_Player.FindAction("Interactive", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        // Remy
-        m_Remy = asset.FindActionMap("Remy", throwIfNotFound: true);
-        m_Remy_Movement = m_Remy.FindAction("Movement", throwIfNotFound: true);
+        // Game
+        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+        m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@InputSystem()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem.Player.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Remy.enabled, "This will cause a leak and performance issues, InputSystem.Remy.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Game.enabled, "This will cause a leak and performance issues, InputSystem.Game.Disable() has not been called.");
     }
 
     /// <summary>
@@ -467,29 +467,29 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     /// </summary>
     public PlayerActions @Player => new PlayerActions(this);
 
-    // Remy
-    private readonly InputActionMap m_Remy;
-    private List<IRemyActions> m_RemyActionsCallbackInterfaces = new List<IRemyActions>();
-    private readonly InputAction m_Remy_Movement;
+    // Game
+    private readonly InputActionMap m_Game;
+    private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
+    private readonly InputAction m_Game_Pause;
     /// <summary>
-    /// Provides access to input actions defined in input action map "Remy".
+    /// Provides access to input actions defined in input action map "Game".
     /// </summary>
-    public struct RemyActions
+    public struct GameActions
     {
         private @InputSystem m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public RemyActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
+        public GameActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Remy/Movement".
+        /// Provides access to the underlying input action "Game/Pause".
         /// </summary>
-        public InputAction @Movement => m_Wrapper.m_Remy_Movement;
+        public InputAction @Pause => m_Wrapper.m_Game_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_Remy; }
+        public InputActionMap Get() { return m_Wrapper.m_Game; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -497,9 +497,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="RemyActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="GameActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(RemyActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -507,14 +507,14 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="RemyActions" />
-        public void AddCallbacks(IRemyActions instance)
+        /// <seealso cref="GameActions" />
+        public void AddCallbacks(IGameActions instance)
         {
-            if (instance == null || m_Wrapper.m_RemyActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_RemyActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
+            if (instance == null || m_Wrapper.m_GameActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -523,21 +523,21 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="RemyActions" />
-        private void UnregisterCallbacks(IRemyActions instance)
+        /// <seealso cref="GameActions" />
+        private void UnregisterCallbacks(IGameActions instance)
         {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="RemyActions.UnregisterCallbacks(IRemyActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GameActions.UnregisterCallbacks(IGameActions)" />.
         /// </summary>
-        /// <seealso cref="RemyActions.UnregisterCallbacks(IRemyActions)" />
-        public void RemoveCallbacks(IRemyActions instance)
+        /// <seealso cref="GameActions.UnregisterCallbacks(IGameActions)" />
+        public void RemoveCallbacks(IGameActions instance)
         {
-            if (m_Wrapper.m_RemyActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_GameActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -547,21 +547,21 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="RemyActions.AddCallbacks(IRemyActions)" />
-        /// <seealso cref="RemyActions.RemoveCallbacks(IRemyActions)" />
-        /// <seealso cref="RemyActions.UnregisterCallbacks(IRemyActions)" />
-        public void SetCallbacks(IRemyActions instance)
+        /// <seealso cref="GameActions.AddCallbacks(IGameActions)" />
+        /// <seealso cref="GameActions.RemoveCallbacks(IGameActions)" />
+        /// <seealso cref="GameActions.UnregisterCallbacks(IGameActions)" />
+        public void SetCallbacks(IGameActions instance)
         {
-            foreach (var item in m_Wrapper.m_RemyActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_GameActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_RemyActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_GameActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="RemyActions" /> instance referencing this action map.
+    /// Provides a new <see cref="GameActions" /> instance referencing this action map.
     /// </summary>
-    public RemyActions @Remy => new RemyActions(this);
+    public GameActions @Game => new GameActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
     /// </summary>
@@ -599,18 +599,18 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Remy" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Game" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="RemyActions.AddCallbacks(IRemyActions)" />
-    /// <seealso cref="RemyActions.RemoveCallbacks(IRemyActions)" />
-    public interface IRemyActions
+    /// <seealso cref="GameActions.AddCallbacks(IGameActions)" />
+    /// <seealso cref="GameActions.RemoveCallbacks(IGameActions)" />
+    public interface IGameActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Movement" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMovement(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
