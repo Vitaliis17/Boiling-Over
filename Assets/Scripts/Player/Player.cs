@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     {
         _inputReader.MovePerformed += _mover.Move;
         _inputReader.JumpingPerformed += _jumper.Jump;
-        _inputReader.InteractivePerformed += _interacter.Interacte;
+        _inputReader.InteractivePerformed += _interacter.Interact;
 
         _inputReader.LookPerformed += _rotater.RotateX;
     }
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
     {
         _inputReader.MovePerformed -= _mover.Move;
         _inputReader.JumpingPerformed -= _jumper.Jump;
-        _inputReader.InteractivePerformed -= _interacter.Interacte;
+        _inputReader.InteractivePerformed -= _interacter.Interact;
 
         _inputReader.LookPerformed -= _rotater.RotateX;
     }

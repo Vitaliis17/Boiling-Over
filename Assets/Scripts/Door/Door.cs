@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 
 public class Door : MonoBehaviour, IInteractable
 {
@@ -32,18 +31,15 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Open()
     {
-        DOLocalRotation(_data.OpenRotation);
+        transform.localRotation = Quaternion.Euler(_data.OpenRotation);
 
         _currentState = DoorStates.Opened;
     }
 
     private void Close()
     {
-        DOLocalRotation(_data.CloseRotation);
+        transform.localRotation = Quaternion.Euler(_data.CloseRotation);
 
         _currentState = DoorStates.Closed;
     }
-
-    private void DOLocalRotation(Vector3 rotation)
-        => transform.DOLocalRotate(rotation, _data.AnimationDuration);
 }
