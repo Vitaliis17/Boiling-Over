@@ -1,76 +1,52 @@
 using UnityEngine;
-using UnityEngine.AI;
 using System.Collections.Generic;
-using System.Collections;
 using System;
 
 public class TargetStateMachine
 {
-    private readonly Dictionary<TargetTypes, Pursuer> _pursuers;
+    private readonly Dictionary<Type, int> _typePriorities;
+    private readonly Dictionary<Type, MovementActions> _movementActions;
 
-    private TargetTypes _currentTargetType;
+    private IRemyInteractable _currentInteractableObject;
 
-    private bool _isActive;
-
+    public event Action<Vector3> TargetChanged;
+    public event Action TargetSetted;
     public event Action<MovementActions> MovementStarted;
-    public event Action Reached;
-    public event Action<Vector3> Transfering;
-    public event Action<TargetTypes> Interacting;
 
-    public TargetStateMachine(NavMeshAgent agent)
+    public event Action<IRemyInteractable> Transferring;
+
+    public TargetStateMachine()
     {
-        _pursuers = new Dictionary<TargetTypes, Pursuer>
+        _typePriorities = new Dictionary<Type, int>()
         {
-          { TargetTypes.Player, new Pursuer(agent, MovementActions.Running) },
-          { TargetTypes.Place, new Pursuer(agent, MovementActions.Walking) },
-          { TargetTypes.None, new Pursuer(agent, MovementActions.Idle) }
+            { typeof(Player), 1},
+            { typeof(InteractablePlace), 2}
         };
 
-        _currentTargetType = TargetTypes.None;
+        _movementActions = new Dictionary<Type, MovementActions>()
+        {
+            { typeof(Player), MovementActions.Running },
+            { typeof(InteractablePlace), MovementActions.Walking }
+        };
+
+        _currentInteractableObject = null;
     }
 
-    public void ChangeTarget(Vector3 destination, TargetTypes targetType)
+    public void SetTarget(IRemyInteractable interactable)
     {
-        if (_pursuers[_currentTargetType].HavePath && HaveSwapPriority(targetType) == false)
+        if (HaveSwapPriority(interactable) == false)
             return;
 
-        _currentTargetType = targetType;
-        _pursuers[_currentTargetType].SetDestination(destination);
+        _currentInteractableObject = interactable;
 
-        if (_pursuers[_currentTargetType].HavePath)
-            MovementStarted?.Invoke(_pursuers[_currentTargetType].State);
+        TargetSetted?.Invoke();
+        TargetChanged?.Invoke(((MonoBehaviour)interactable).transform.position);
+        MovementStarted?.Invoke(_movementActions[interactable.GetType()]);
     }
 
-    public IEnumerator CheckPathStatus()
-    {
-        const float WaitingTime = 0.1f;
+    public void TransferCurrentObject()
+        => Transferring?.Invoke(_currentInteractableObject);
 
-        WaitForSeconds waiting = new(WaitingTime);
-
-        while (_isActive)
-        {
-            _pursuers[_currentTargetType].UpdatePathStatus();
-
-            if (_pursuers[_currentTargetType].HavePath == false)
-            {
-                Interacting?.Invoke(_currentTargetType);
-
-                Reached?.Invoke();
-                Transfering?.Invoke(_pursuers[_currentTargetType].TargetPosition);
-
-                yield return new WaitWhile(() => _pursuers[_currentTargetType].HavePath == false);
-            }
-
-            yield return waiting;
-        }
-    }
-
-    public void Activate()
-        => _isActive = true;
-
-    public void Deactivate()
-        => _isActive = false;
-
-    private bool HaveSwapPriority(TargetTypes nextType)
-        => nextType <= _currentTargetType;
+    private bool HaveSwapPriority(IRemyInteractable interactable)
+        => interactable == null || _typePriorities[interactable.GetType()] <= _typePriorities[_currentInteractableObject.GetType()];
 }

@@ -10,10 +10,11 @@ public class RemyPresenter : MonoBehaviour
     [SerializeField] private ZoneChecker _sight;
 
     [SerializeField] private AgentMovement _agentMovement;
+    [SerializeField] private Pursuer _pursuer;
 
     [SerializeField] private Animator _animator;
 
-    private InteractingStateMachine _workingStateMachine;
+    private InteractingStateMachine _interactingStateMachine;
     private AnimationStateMachine _animationStateMachine;
     private TargetStateMachine _targetStateMachine;
 
@@ -23,60 +24,60 @@ public class RemyPresenter : MonoBehaviour
 
     private void Awake()
     {
-        _workingStateMachine = new();
+        _interactingStateMachine = new();
+        _targetStateMachine = new();
         _animationStateMachine = new(_animator, _agentAnimationData);
-        _targetStateMachine = new(_agentMovement.Agent);
+
+        _pursuer.Initialize(_agentMovement.Agent);
 
         _placePool = new();
     }
 
     private void OnEnable()
     {
-        _targetStateMachine.Activate();
-        _coroutine = StartCoroutine(_targetStateMachine.CheckPathStatus());
+        _placePool.Activated += _targetStateMachine.SetTarget;
 
-        _placePool.Activated += _workingStateMachine.SetCurrentPlace;
-
-        _workingStateMachine.PlaceChanged += (Vector3 _, TargetTypes _) => _remy.DeactivateKinematic();
-        _workingStateMachine.PlaceChanged += _targetStateMachine.ChangeTarget;
-
+        _targetStateMachine.TargetSetted += _remy.DeactivateKinematic;
+        _targetStateMachine.TargetChanged += _pursuer.SetDestination;
         _targetStateMachine.MovementStarted += _animationStateMachine.ChangeState;
 
         _placePool.Initialize(_places);
 
-        _targetStateMachine.Reached += _remy.ActivateKinematic;
-        _targetStateMachine.Reached += _workingStateMachine.Interact;
+        _pursuer.Reached += _remy.ActivateKinematic;
+        _pursuer.Reached += _targetStateMachine.TransferCurrentObject;
 
-        _targetStateMachine.Transfering += _agentMovement.Transfer;
+        _pursuer.Transfering += _agentMovement.Transfer;
 
-        _workingStateMachine.StateChanged += _animationStateMachine.ChangeState;
-        _workingStateMachine.RotationChanged += _remy.SetLooking;
+        _targetStateMachine.Transferring += _interactingStateMachine.Interact;
+
+        _interactingStateMachine.StateChanged += _animationStateMachine.ChangeState;
+        _interactingStateMachine.RotationChanged += _remy.SetLooking;
 
         _placePool.PlaceDeactivated += _agentMovement.Activate;
+        _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
         _placePool.PlaceDeactivated += _placePool.ActivatePlace;
     }
 
     private void OnDisable()
     {
-        _targetStateMachine.Deactivate();
-        StopCoroutine(_coroutine);
+        _placePool.Activated -= _targetStateMachine.SetTarget;
 
-        _placePool.Activated -= _workingStateMachine.SetCurrentPlace;
-
-        _workingStateMachine.PlaceChanged -= (Vector3 _, TargetTypes _) => _remy.DeactivateKinematic();
-        _workingStateMachine.PlaceChanged -= _targetStateMachine.ChangeTarget;
-
+        _targetStateMachine.TargetSetted -= _remy.DeactivateKinematic;
+        _targetStateMachine.TargetChanged -= _pursuer.SetDestination;
         _targetStateMachine.MovementStarted -= _animationStateMachine.ChangeState;
 
-        _targetStateMachine.Reached -= _remy.ActivateKinematic;
-        _targetStateMachine.Reached -= _workingStateMachine.Interact;
-      
-        _targetStateMachine.Transfering -= _agentMovement.Transfer;
+        _pursuer.Reached -= _remy.ActivateKinematic;
+        _pursuer.Reached -= _targetStateMachine.TransferCurrentObject;
 
-        _workingStateMachine.StateChanged -= _animationStateMachine.ChangeState;
-        _workingStateMachine.RotationChanged -= _remy.SetLooking;
+        _pursuer.Transfering -= _agentMovement.Transfer;
+
+        _targetStateMachine.Transferring -= _interactingStateMachine.Interact;
+
+        _interactingStateMachine.StateChanged -= _animationStateMachine.ChangeState;
+        _interactingStateMachine.RotationChanged -= _remy.SetLooking;
 
         _placePool.PlaceDeactivated -= _agentMovement.Activate;
+        _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
         _placePool.PlaceDeactivated -= _placePool.ActivatePlace;
     }
 }

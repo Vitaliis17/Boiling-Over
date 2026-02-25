@@ -1,31 +1,29 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class InteractingStateMachine
 {
-    private readonly TargetTypes _targetType;
-    
-    private InteractablePlace _currentPlace;
+    private Dictionary<Type, MovementActions> _actions;
 
-    public event Action<Vector3, TargetTypes> PlaceChanged;
+    public InteractingStateMachine()
+    {
+        _actions = new Dictionary<Type, MovementActions>()
+        {
+            { typeof(Seat), MovementActions.Sitting },
+            { typeof(StayingPlace), MovementActions.Idle },
+            { typeof(Player), MovementActions.Attack }
+        };
+    }
+
     public event Action<Quaternion> RotationChanged;
     public event Action<MovementActions> StateChanged;
 
-    public InteractingStateMachine()
-        => _targetType = TargetTypes.Place;
-
-    public void SetCurrentPlace(InteractablePlace place)
+    public void Interact(IRemyInteractable interactable)
     {
-        _currentPlace = place;
+        interactable.Interact();
 
-        PlaceChanged?.Invoke(place.transform.position, _targetType);
-    }
-
-    public void Interact()
-    {
-        _currentPlace.Interact();
-
-        StateChanged?.Invoke(_currentPlace.State);
-        RotationChanged?.Invoke(_currentPlace.transform.rotation);
+        StateChanged?.Invoke(_actions[interactable.GetType()]);
+        RotationChanged?.Invoke(((MonoBehaviour)interactable).transform.rotation);
     }
 }

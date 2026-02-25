@@ -3,5 +3,6 @@ public enum MovementActions
     Idle = 0,
     Walking = 1,
     Running = 2,
-    Sitting = 3
+    Sitting = 3,
+    Attack = 4
 }

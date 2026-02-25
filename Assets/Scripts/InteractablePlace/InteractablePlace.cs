@@ -2,16 +2,15 @@ using System.Collections;
 using System;
 using UnityEngine;
 
-public class InteractablePlace : MonoBehaviour
+public class InteractablePlace : MonoBehaviour, IRemyInteractable
 {
     [SerializeField] private TimerData _timerData;
-    [SerializeField] private MovementActions _state;
 
     private Coroutine _coroutine;
 
     public event Action<InteractablePlace> Releasing;
 
-    public MovementActions State => _state;
+    public MovementActions State { get; protected set; }
 
     private void OnDisable()
         => StopCoroutine();

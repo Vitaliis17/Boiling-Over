@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IRemyInteractable
 {
     [SerializeField] private PlayerInputReader _inputReader;
     [SerializeField] private RotationData _rotationData;
@@ -44,4 +44,7 @@ public class Player : MonoBehaviour
 
         _inputReader.LookPerformed -= _rotater.RotateX;
     }
+
+    public void Interact()
+        => Destroy(gameObject);
 }
