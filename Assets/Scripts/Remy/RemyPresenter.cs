@@ -20,8 +20,6 @@ public class RemyPresenter : MonoBehaviour
 
     private InteractablePlacesPool _placePool;
 
-    private Coroutine _coroutine;
-
     private void Awake()
     {
         _interactingStateMachine = new();
@@ -31,17 +29,21 @@ public class RemyPresenter : MonoBehaviour
         _pursuer.Initialize(_agentMovement.Agent);
 
         _placePool = new();
+        _placePool.Initialize(_places);
     }
 
     private void OnEnable()
     {
-        _placePool.Activated += _targetStateMachine.SetTarget;
+        _targetStateMachine.Releasing += _placePool.Release;
+
+        _targetStateMachine.CurrentObjectChanging += _placePool.ActivatePlace;
+
+        _sight.PlayerFinded += _targetStateMachine.SetTarget;
+        _sight.PlayerEscaped += _targetStateMachine.GetInteractableObject;
 
         _targetStateMachine.TargetSetted += _remy.DeactivateKinematic;
         _targetStateMachine.TargetChanged += _pursuer.SetDestination;
         _targetStateMachine.MovementStarted += _animationStateMachine.ChangeState;
-
-        _placePool.Initialize(_places);
 
         _pursuer.Reached += _remy.ActivateKinematic;
         _pursuer.Reached += _targetStateMachine.TransferCurrentObject;
@@ -55,12 +57,18 @@ public class RemyPresenter : MonoBehaviour
 
         _placePool.PlaceDeactivated += _agentMovement.Activate;
         _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
-        _placePool.PlaceDeactivated += _placePool.ActivatePlace;
+
+        _targetStateMachine.GetInteractableObject();
     }
 
     private void OnDisable()
     {
-        _placePool.Activated -= _targetStateMachine.SetTarget;
+        _targetStateMachine.Releasing -= _placePool.Release;
+
+        _targetStateMachine.CurrentObjectChanging -= _placePool.ActivatePlace;
+
+        _sight.PlayerFinded -= _targetStateMachine.SetTarget;
+        _sight.PlayerEscaped -= _targetStateMachine.GetInteractableObject;
 
         _targetStateMachine.TargetSetted -= _remy.DeactivateKinematic;
         _targetStateMachine.TargetChanged -= _pursuer.SetDestination;
@@ -77,7 +85,6 @@ public class RemyPresenter : MonoBehaviour
         _interactingStateMachine.RotationChanged -= _remy.SetLooking;
 
         _placePool.PlaceDeactivated -= _agentMovement.Activate;
-        _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
-        _placePool.PlaceDeactivated -= _placePool.ActivatePlace;
+        _placePool.PlaceDeactivated -= _remy.DeactivateKinematic;
     }
 }

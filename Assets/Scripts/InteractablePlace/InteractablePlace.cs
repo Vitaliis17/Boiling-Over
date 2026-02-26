@@ -8,7 +8,7 @@ public class InteractablePlace : MonoBehaviour, IRemyInteractable
 
     private Coroutine _coroutine;
 
-    public event Action<InteractablePlace> Releasing;
+    public event Action InteractionOvered;
 
     public MovementActions State { get; protected set; }
 
@@ -25,7 +25,7 @@ public class InteractablePlace : MonoBehaviour, IRemyInteractable
     {
         yield return new WaitForSeconds(_timerData.GenerateTime());
 
-        Releasing?.Invoke(this);
+        InteractionOvered?.Invoke();
     }
 
     private void StopCoroutine()

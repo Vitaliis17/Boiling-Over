@@ -1,4 +1,4 @@
 public interface IRemyInteractable
 {
-    public void Interact();
+    void Interact();
 }

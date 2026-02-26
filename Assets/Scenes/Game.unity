@@ -15421,7 +15421,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf32de681d2ede45b02bbe204700514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Remy
-  _sight: {fileID: 0}
+  _sight: {fileID: 1179626870}
+--- !u!114 &226614416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226614404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb86e477d53dc864b854a565e83a017b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pursuer
 --- !u!4 &227800678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1129999413580534391, guid: edb02028d59ccac4ca6641a183fa7346, type: 3}
@@ -41956,7 +41968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &650604023
 Transform:
   m_ObjectHideFlags: 0
@@ -41981,11 +41993,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 650604022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050b1a64756e61d45a511f45c9d618f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3aca88f1bf28e364a968bf66f524aee3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractablePlace
+  m_EditorClassIdentifier: Assembly-CSharp::StayingPlace
   _timerData: {fileID: 11400000, guid: 10c3b3ba579ec3644b319dab5085927b, type: 2}
-  _state: 0
 --- !u!1001 &651535874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74762,6 +74773,7 @@ MonoBehaviour:
   _remy: {fileID: 226614411}
   _sight: {fileID: 1179626870}
   _agentMovement: {fileID: 226614405}
+  _pursuer: {fileID: 226614416}
   _animator: {fileID: 226614409}
 --- !u!4 &1161611019
 Transform:
@@ -86295,7 +86307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1321751602
 Transform:
   m_ObjectHideFlags: 0
@@ -86320,11 +86332,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1321751601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050b1a64756e61d45a511f45c9d618f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3aca88f1bf28e364a968bf66f524aee3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractablePlace
+  m_EditorClassIdentifier: Assembly-CSharp::StayingPlace
   _timerData: {fileID: 11400000, guid: 10c3b3ba579ec3644b319dab5085927b, type: 2}
-  _state: 0
 --- !u!1001 &1323121416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102648,7 +102659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1572718609
 Transform:
   m_ObjectHideFlags: 0
@@ -102673,11 +102684,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572718607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050b1a64756e61d45a511f45c9d618f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4666f93b21c858b4786db6dc4aaf1d87, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractablePlace
+  m_EditorClassIdentifier: Assembly-CSharp::Seat
   _timerData: {fileID: 11400000, guid: 10c3b3ba579ec3644b319dab5085927b, type: 2}
-  _state: 3
 --- !u!1001 &1573210802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107306,7 +107316,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1628817366
 Transform:
   m_ObjectHideFlags: 0
@@ -107331,11 +107341,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1628817364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050b1a64756e61d45a511f45c9d618f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4666f93b21c858b4786db6dc4aaf1d87, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractablePlace
+  m_EditorClassIdentifier: Assembly-CSharp::Seat
   _timerData: {fileID: 11400000, guid: 10c3b3ba579ec3644b319dab5085927b, type: 2}
-  _state: 3
 --- !u!1001 &1629506165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143573,6 +143582,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 226614411}
+    - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 226614416}
   m_SourcePrefab: {fileID: 100100000, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
 --- !u!1001 &7598933326611826838
 PrefabInstance:

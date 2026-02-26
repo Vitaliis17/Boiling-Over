@@ -5,7 +5,6 @@ public class InteractablePlacesPool
 {
     private List<InteractablePlace> _places;
 
-    public event Action<InteractablePlace> Activated;
     public event Action PlaceDeactivated;
 
     public void Initialize(InteractablePlace[] places)
@@ -14,30 +13,23 @@ public class InteractablePlacesPool
 
         for (int i = 0; i < places.Length; i++)
             _places.Add(places[i]);
-
-        ActivatePlace();
     }
 
-    public void ActivatePlace()
+    public InteractablePlace ActivatePlace()
     {
         InteractablePlace place = GetRandomPlace();
 
         if (place == null)
-            return;
+            return null;
 
-        place.gameObject.SetActive(true);
         _places.Remove(place);
 
-        place.Releasing += Release;
-        Activated?.Invoke(place);
+        return place;
     }
 
     public void Release(InteractablePlace place)
     {
-        place.Releasing -= Release;
-
         _places.Add(place);
-        place.gameObject.SetActive(false);
 
         PlaceDeactivated?.Invoke();
     }

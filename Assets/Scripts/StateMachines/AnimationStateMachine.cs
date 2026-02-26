@@ -13,9 +13,10 @@ public class AnimationStateMachine
         _animationStates = new Dictionary<MovementActions, AnimationState>
         {
             { MovementActions.Idle, new AnimationState(animator, animationData.IdleHash) },
-            { MovementActions.Walking, new AnimationState(animator, animationData.WalkingHash)},
-            { MovementActions.Running, new AnimationState(animator, animationData.RunningHash)},
-            { MovementActions.Sitting, new AnimationState(animator, animationData.SittingHash)}
+            { MovementActions.Walking, new AnimationState(animator, animationData.WalkingHash) },
+            { MovementActions.Running, new AnimationState(animator, animationData.RunningHash) },
+            { MovementActions.Sitting, new AnimationState(animator, animationData.SittingHash) },
+            { MovementActions.Attack, new AnimationState(animator, animationData.AttackHash) }
         };
 
         GenerateLayers();

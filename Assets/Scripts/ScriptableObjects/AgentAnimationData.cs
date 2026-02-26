@@ -7,6 +7,7 @@ public class AgentAnimationData : ScriptableObject
     public int WalkingHash { get; private set; }
     public int RunningHash { get; private set; }
     public int SittingHash { get; private set; }
+    public int AttackHash { get; private set; }
 
     private void Awake()
     {
@@ -14,6 +15,7 @@ public class AgentAnimationData : ScriptableObject
         WalkingHash = SetHash(nameof(MovementActions.Walking));
         RunningHash = SetHash(nameof(MovementActions.Running));
         SittingHash = SetHash(nameof(MovementActions.Sitting));
+        AttackHash = SetHash(nameof(MovementActions.Attack));
     }
 
     private int SetHash(string animationName)

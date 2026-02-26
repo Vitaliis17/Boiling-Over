@@ -4,7 +4,6 @@ using System;
 
 public class TargetStateMachine
 {
-    private readonly Dictionary<Type, int> _typePriorities;
     private readonly Dictionary<Type, MovementActions> _movementActions;
 
     private IRemyInteractable _currentInteractableObject;
@@ -14,39 +13,65 @@ public class TargetStateMachine
     public event Action<MovementActions> MovementStarted;
 
     public event Action<IRemyInteractable> Transferring;
+    public event Action<InteractablePlace> Releasing;
+
+    public event Func<InteractablePlace> CurrentObjectChanging;
 
     public TargetStateMachine()
     {
-        _typePriorities = new Dictionary<Type, int>()
-        {
-            { typeof(Player), 1},
-            { typeof(InteractablePlace), 2}
-        };
-
         _movementActions = new Dictionary<Type, MovementActions>()
         {
             { typeof(Player), MovementActions.Running },
-            { typeof(InteractablePlace), MovementActions.Walking }
+            { typeof(Seat), MovementActions.Walking },
+            { typeof(StayingPlace), MovementActions.Walking }
         };
-
-        _currentInteractableObject = null;
     }
 
     public void SetTarget(IRemyInteractable interactable)
     {
-        if (HaveSwapPriority(interactable) == false)
-            return;
+        ReleaseInteractableObject();
 
         _currentInteractableObject = interactable;
 
-        TargetSetted?.Invoke();
-        TargetChanged?.Invoke(((MonoBehaviour)interactable).transform.position);
-        MovementStarted?.Invoke(_movementActions[interactable.GetType()]);
+        InvokeTargetEvents();
+    }
+
+    public void GetInteractableObject()
+    {
+        if (_currentInteractableObject != null && _currentInteractableObject is InteractablePlace)
+            ReleaseInteractableObject();
+
+        InteractablePlace place = CurrentObjectChanging?.Invoke();
+        place.InteractionOvered += ReleaseAfterInteraction;
+
+        _currentInteractableObject = place;
+
+        InvokeTargetEvents();
     }
 
     public void TransferCurrentObject()
         => Transferring?.Invoke(_currentInteractableObject);
 
-    private bool HaveSwapPriority(IRemyInteractable interactable)
-        => interactable == null || _typePriorities[interactable.GetType()] <= _typePriorities[_currentInteractableObject.GetType()];
+    private void ReleaseInteractableObject()
+    {
+        if (_currentInteractableObject is InteractablePlace place)
+        {
+            place.InteractionOvered -= ReleaseAfterInteraction;
+            Releasing?.Invoke(place);
+        }
+    }
+
+    private void ReleaseAfterInteraction()
+    {
+        ReleaseInteractableObject();
+
+        GetInteractableObject();
+    }
+
+    private void InvokeTargetEvents()
+    {
+        TargetSetted?.Invoke();
+        TargetChanged?.Invoke(((MonoBehaviour)_currentInteractableObject).transform.position);
+        MovementStarted?.Invoke(_movementActions[_currentInteractableObject.GetType()]);
+    }
 }
