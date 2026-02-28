@@ -13,6 +13,7 @@ public class RemyPresenter : MonoBehaviour
     [SerializeField] private Pursuer _pursuer;
 
     [SerializeField] private Animator _animator;
+    [SerializeField] private TimeInteractionStateMachine _timeInteractionMachine;
 
     private InteractingStateMachine _interactingStateMachine;
     private AnimationStateMachine _animationStateMachine;
@@ -51,12 +52,15 @@ public class RemyPresenter : MonoBehaviour
         _pursuer.Transfering += _agentMovement.Transfer;
 
         _targetStateMachine.Transferring += _interactingStateMachine.Interact;
+        _targetStateMachine.Transferring += _timeInteractionMachine.Interact;
 
         _interactingStateMachine.StateChanged += _animationStateMachine.ChangeState;
         _interactingStateMachine.RotationChanged += _remy.SetLooking;
 
         _placePool.PlaceDeactivated += _agentMovement.Activate;
         _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
+
+        _timeInteractionMachine.InteractionCompleted += _targetStateMachine.GetInteractableObject;
 
         _targetStateMachine.GetInteractableObject();
     }
@@ -80,11 +84,14 @@ public class RemyPresenter : MonoBehaviour
         _pursuer.Transfering -= _agentMovement.Transfer;
 
         _targetStateMachine.Transferring -= _interactingStateMachine.Interact;
+        _targetStateMachine.Transferring -= _timeInteractionMachine.Interact;
 
         _interactingStateMachine.StateChanged -= _animationStateMachine.ChangeState;
         _interactingStateMachine.RotationChanged -= _remy.SetLooking;
 
         _placePool.PlaceDeactivated -= _agentMovement.Activate;
         _placePool.PlaceDeactivated -= _remy.DeactivateKinematic;
+
+        _timeInteractionMachine.InteractionCompleted -= _targetStateMachine.GetInteractableObject;
     }
 }
