@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 
 public class InteractablePlacesPool
 {
     private List<InteractablePlace> _places;
-
-    public event Action PlaceDeactivated;
 
     public void Initialize(InteractablePlace[] places)
     {
@@ -28,11 +25,7 @@ public class InteractablePlacesPool
     }
 
     public void Release(InteractablePlace place)
-    {
-        _places.Add(place);
-
-        PlaceDeactivated?.Invoke();
-    }
+        => _places.Add(place);
 
     private InteractablePlace GetRandomPlace()
     {

@@ -42,7 +42,6 @@ public class TargetStateMachine
             ReleaseInteractableObject();
 
         InteractablePlace place = CurrentObjectChanging?.Invoke();
-        place.InteractionOvered += ReleaseInteractableObject;
 
         _currentInteractableObject = place;
 
@@ -56,7 +55,6 @@ public class TargetStateMachine
     {
         if (_currentInteractableObject is InteractablePlace place)
         {
-            place.InteractionOvered -= ReleaseInteractableObject;
             Releasing?.Invoke(place);
         }
 

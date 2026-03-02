@@ -43,6 +43,8 @@ public class RemyPresenter : MonoBehaviour
         _sight.PlayerEscaped += _targetStateMachine.GetInteractableObject;
 
         _targetStateMachine.TargetSetted += _remy.DeactivateKinematic;
+        _targetStateMachine.TargetSetted += _timeInteractionMachine.StopInteraction;
+
         _targetStateMachine.TargetChanged += _pursuer.SetDestination;
         _targetStateMachine.MovementStarted += _animationStateMachine.ChangeState;
 
@@ -57,8 +59,8 @@ public class RemyPresenter : MonoBehaviour
         _interactingStateMachine.StateChanged += _animationStateMachine.ChangeState;
         _interactingStateMachine.RotationChanged += _remy.SetLooking;
 
-        _placePool.PlaceDeactivated += _agentMovement.Activate;
-        _placePool.PlaceDeactivated += _remy.DeactivateKinematic;
+        _timeInteractionMachine.InteractionOvered += _agentMovement.Activate;
+        _timeInteractionMachine.InteractionOvered += _remy.DeactivateKinematic;
 
         _timeInteractionMachine.InteractionCompleted += _targetStateMachine.GetInteractableObject;
 
@@ -75,6 +77,8 @@ public class RemyPresenter : MonoBehaviour
         _sight.PlayerEscaped -= _targetStateMachine.GetInteractableObject;
 
         _targetStateMachine.TargetSetted -= _remy.DeactivateKinematic;
+        _targetStateMachine.TargetSetted -= _timeInteractionMachine.StopInteraction;
+
         _targetStateMachine.TargetChanged -= _pursuer.SetDestination;
         _targetStateMachine.MovementStarted -= _animationStateMachine.ChangeState;
 
@@ -89,8 +93,8 @@ public class RemyPresenter : MonoBehaviour
         _interactingStateMachine.StateChanged -= _animationStateMachine.ChangeState;
         _interactingStateMachine.RotationChanged -= _remy.SetLooking;
 
-        _placePool.PlaceDeactivated -= _agentMovement.Activate;
-        _placePool.PlaceDeactivated -= _remy.DeactivateKinematic;
+        _timeInteractionMachine.InteractionOvered -= _agentMovement.Activate;
+        _timeInteractionMachine.InteractionOvered -= _remy.DeactivateKinematic;
 
         _timeInteractionMachine.InteractionCompleted -= _targetStateMachine.GetInteractableObject;
     }

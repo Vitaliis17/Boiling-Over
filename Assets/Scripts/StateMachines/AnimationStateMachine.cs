@@ -21,14 +21,13 @@ public class AnimationStateMachine
 
         GenerateLayers();
 
-        _currentState = _animationStates[MovementActions.Idle];
-        _currentState.Start(1);
-        _currentState.Start(2);
+        ChangeState(MovementActions.Idle);
     }
 
     public void ChangeState(MovementActions state)
     {
         _currentState = _animationStates[state];
+
         _currentState.Start(1);
         _currentState.Start(2);
     }

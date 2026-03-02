@@ -9,8 +9,10 @@ public class TimeInteractionStateMachine : MonoBehaviour
     private Timer _timer;
 
     private Coroutine _coroutine;
+    private bool _isInteracting;
 
     public event Action InteractionCompleted;
+    public event Action InteractionOvered;
 
     private void Awake()
     {
@@ -22,25 +24,41 @@ public class TimeInteractionStateMachine : MonoBehaviour
         };
 
         _timer = new Timer();
+        _isInteracting = false;
     }
 
     private void OnDisable()
-        => StopCoroutine();
+        => StopInteraction();
 
     public void Interact(IRemyInteractable interactable)
     {
-        StopCoroutine();
+        StopInteraction();
 
         _coroutine = StartCoroutine(WaitInteractable(interactable));
     }
 
+    public void StopInteraction()
+    {
+        if (_isInteracting == false)
+            return;
+
+        _isInteracting = false;
+        StopCoroutine();
+
+        InteractionOvered?.Invoke();
+    }
+
     private IEnumerator WaitInteractable(IRemyInteractable interactable)
     {
+        _isInteracting = true;
         float waitingTime = _interactionTimes[interactable.GetType()];
 
         yield return _timer.Wait(waitingTime);
 
         InteractionCompleted?.Invoke();
+        InteractionOvered?.Invoke();
+
+        _isInteracting = false;
     }
 
     private void StopCoroutine()
