@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec26d7bc9e9987a4bb8c73411146a514, type: 3}
-  m_Name: RotationData
-  m_EditorClassIdentifier: Assembly-CSharp::RotationData
-  _sensitivityX: 2.5
-  _sensitivityY: 1.5
-  _maxY: 30
-  _minY: -60
+  m_Script: {fileID: 11500000, guid: fa634230f11726d41bdf9be430c9da6f, type: 3}
+  m_Name: KeyData
+  m_EditorClassIdentifier: Assembly-CSharp::KeyData
+  _name: MainDoorKey

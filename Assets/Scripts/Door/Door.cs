@@ -29,7 +29,7 @@ public class Door : MonoBehaviour, IInteractable
         }
     }
 
-    private void Open()
+    public void Open()
     {
         transform.localRotation = Quaternion.Euler(_data.OpenRotation);
 
