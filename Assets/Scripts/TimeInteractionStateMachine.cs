@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
-public class TimeInteractionStateMachine : MonoBehaviour
+public class TimeInteractionStateMachine
 {
     private Dictionary<Type, float> _interactionTimes;
     private Timer _timer;
 
-    private Coroutine _coroutine;
-    private bool _isInteracting;
+    private UniTask _task;
+
+    private CancellationTokenSource _source;
 
     public event Action InteractionCompleted;
     public event Action InteractionOvered;
 
-    private void Awake()
+    public TimeInteractionStateMachine()
     {
         _interactionTimes = new Dictionary<Type, float>()
         {
@@ -23,50 +25,44 @@ public class TimeInteractionStateMachine : MonoBehaviour
             { typeof(Player), 2f}
         };
 
-        _timer = new Timer();
-        _isInteracting = false;
-    }
+        _source = new();
+        _timer = new();
 
-    private void OnDisable()
-        => StopInteraction();
+        _task = UniTask.CompletedTask;
+    }
 
     public void Interact(IRemyInteractable interactable)
     {
         StopInteraction();
 
-        _coroutine = StartCoroutine(WaitInteractable(interactable));
+        _task = WaitInteractable(interactable, _source.Token);
     }
 
     public void StopInteraction()
     {
-        if (_isInteracting == false)
+        if (_task.Status != UniTaskStatus.Pending)
             return;
 
-        _isInteracting = false;
-        StopCoroutine();
+        Cancel();
 
         InteractionOvered?.Invoke();
     }
 
-    private IEnumerator WaitInteractable(IRemyInteractable interactable)
+    private async UniTask WaitInteractable(IRemyInteractable interactable, CancellationToken token)
     {
-        _isInteracting = true;
         float waitingTime = _interactionTimes[interactable.GetType()];
-
-        yield return _timer.Wait(waitingTime);
-
+        
+        await _timer.WaitSeconds(waitingTime, token);
+        
         InteractionCompleted?.Invoke();
         InteractionOvered?.Invoke();
-
-        _isInteracting = false;
     }
 
-    private void StopCoroutine()
+    private void Cancel()
     {
-        if (_coroutine == null)
-            return;
+        _source?.Cancel();
+        _source?.Dispose();
 
-        StopCoroutine(_coroutine);
-        _coroutine = null;
+        _source = new();
     }
 }

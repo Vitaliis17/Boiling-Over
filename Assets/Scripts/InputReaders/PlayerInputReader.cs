@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
-public class PlayerInputReader : MonoBehaviour
+public class PlayerInputReader : InputReader
 {
     private InputSystem.PlayerActions _action;
 
@@ -14,25 +14,30 @@ public class PlayerInputReader : MonoBehaviour
 
     public event Action JumpingPerformed;
     public event Action InteractivePerformed;
+    public event Action PausePerformed;
 
     private void Awake()
-        => _action = new InputSystem().Player;
+    {
+        _action = new InputSystem().Player;
+        Map = _action;
+    }
 
     private void OnEnable()
     {
-        _action.Enable();
-
         _action.Jump.performed += InvokeJumping;
         _action.Interactive.performed += InvokeInteractive;
+        _action.Pause.performed += InvokePause;
     }
 
     private void OnDisable()
     {
-        _action.Disable();
+        Deactivate();
 
         _action.Jump.performed -= InvokeJumping;
         _action.Interactive.performed -= InvokeInteractive;
+        _action.Pause.performed -= InvokePause;
     }
+
 
     private void Update()
     {
@@ -54,4 +59,7 @@ public class PlayerInputReader : MonoBehaviour
 
     private void InvokeInteractive(InputAction.CallbackContext context)
         => InteractivePerformed?.Invoke();
+
+    private void InvokePause(InputAction.CallbackContext context)
+        => PausePerformed?.Invoke();
 }

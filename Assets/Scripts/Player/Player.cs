@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IRemyInteractable
 {
     [SerializeField] private PlayerInputReader _inputReader;
-    [SerializeField] private RotationData _rotationData;
+    [SerializeField] private LookRotationData _rotationData;
 
     [SerializeField] private Interacter _interacter;
 
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IRemyInteractable
 
     private Mover _mover;
     private Jumper _jumper;
-    private Rotater _rotater;
+    private LookRotater _rotater;
 
     private void Awake()
     {

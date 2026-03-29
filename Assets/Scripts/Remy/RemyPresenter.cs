@@ -13,8 +13,8 @@ public class RemyPresenter : MonoBehaviour
     [SerializeField] private Pursuer _pursuer;
 
     [SerializeField] private Animator _animator;
-    [SerializeField] private TimeInteractionStateMachine _timeInteractionMachine;
 
+    private TimeInteractionStateMachine _timeInteractionMachine;
     private InteractingStateMachine _interactingStateMachine;
     private AnimationStateMachine _animationStateMachine;
     private TargetStateMachine _targetStateMachine;
@@ -23,6 +23,7 @@ public class RemyPresenter : MonoBehaviour
 
     private void Awake()
     {
+        _timeInteractionMachine = new();
         _interactingStateMachine = new();
         _targetStateMachine = new();
         _animationStateMachine = new(_animator, _agentAnimationData);

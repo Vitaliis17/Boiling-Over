@@ -41,6 +41,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "ca9fa876-d714-46fc-9c73-6e426380474a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -131,17 +140,46 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72b7c08a-38ef-449b-b7c4-3a6577fcfcbc",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "Game",
-            "id": "d2265639-9322-47a5-a31a-8c5d910022fa",
+            "name": "Minigame",
+            "id": "9feb5599-754a-4c82-8863-20c39e62c694",
             "actions": [
                 {
-                    "name": "Pause",
+                    "name": "Turn",
+                    "type": "Value",
+                    "id": "e0f165fd-171d-48ad-b5e0-0a7456957005",
+                    "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Enter",
                     "type": "Button",
-                    "id": "cf9ed4ff-a061-46b9-be44-95df46329c7d",
+                    "id": "c5cf08cc-bc0e-4dc2-b301-bdda01af23f4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "b4c1a9ca-c54c-46f7-a580-734c754467be",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -150,13 +188,57 @@
             ],
             "bindings": [
                 {
+                    "name": "1D Axis",
+                    "id": "1970a05c-c413-4307-a7b5-681429822c9d",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3cedc6c3-c86b-44ba-88e5-7cc91c0a024a",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "7ee6d655-dfec-45cd-bfb1-588897b0e2c5",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
-                    "id": "ee033cc4-ecaa-4b36-bb79-baedd57b8181",
+                    "id": "287ae65d-a7bb-4ec3-a108-c3e6e69dafc8",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Enter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e3b689f7-8364-4b60-88c4-2abcda6fc138",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pause",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

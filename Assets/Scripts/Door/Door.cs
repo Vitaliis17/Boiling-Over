@@ -1,45 +1,23 @@
 using UnityEngine;
+using DG.Tweening;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door
 {
-    [SerializeField] private DoorData _data;
+    private readonly DoorData _data;
+    private readonly Transform _transform;
 
-    private CustomeLayerMasks _mask;
-    private DoorStates _currentState;
-
-    private void Awake()
+    public Door(Transform transform, DoorData data)
     {
-        _mask = CustomeLayerMasks.Interactable;
-        _currentState = DoorStates.Closed;
-
-        gameObject.layer = (int)_mask;
-    }
-
-    public void Interact()
-    {
-        switch (_currentState)
-        {
-            case DoorStates.Closed:
-                Open();
-                break;
-
-            case DoorStates.Opened:
-                Close();
-                break;
-        }
+        _transform = transform;
+        _data = data;
     }
 
     public void Open()
-    {
-        transform.localRotation = Quaternion.Euler(_data.OpenRotation);
+        => Rotate(_data.OpenRotation);
 
-        _currentState = DoorStates.Opened;
-    }
+    public void Close()
+        => Rotate(_data.CloseRotation);
 
-    private void Close()
-    {
-        transform.localRotation = Quaternion.Euler(_data.CloseRotation);
-
-        _currentState = DoorStates.Closed;
-    }
+    private void Rotate(Vector3 rotation)
+        => _transform.DOLocalRotate(rotation, _data.AnimationDuration);
 }

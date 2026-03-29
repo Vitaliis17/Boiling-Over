@@ -5,7 +5,7 @@ public class PauseSetter : MonoBehaviour
 {
     [SerializeField] private Transform _panel;
     
-    [SerializeField] private GameInputReader _inputReader;
+    [SerializeField] private PlayerInputReader _inputReader;
 
     private bool _isPause;
 
@@ -16,10 +16,10 @@ public class PauseSetter : MonoBehaviour
         => _isPause = false;
 
     private void OnEnable()
-        => _inputReader.EscapePressed += SwitchState;
+        => _inputReader.PausePerformed += SwitchState;
 
     private void OnDisable()
-        => _inputReader.EscapePressed -= SwitchState;
+        => _inputReader.PausePerformed -= SwitchState;
 
     public void Deactivate()
     {

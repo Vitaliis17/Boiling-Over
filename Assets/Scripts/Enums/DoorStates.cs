@@ -1,5 +1,5 @@
 public enum DoorStates
 {
-    Opened = 0,
-    Closed = 1
+    Closed = 0,
+    Opened = 1
 }

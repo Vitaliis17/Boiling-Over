@@ -1,10 +1,10 @@
-using UnityEngine;
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class Timer
 {
-    public IEnumerator Wait(float time)
+    public async UniTask WaitSeconds(float time, CancellationToken token)
     {
-        yield return new WaitForSeconds(time);
+        await UniTask.WaitForSeconds(time, cancellationToken: token);
     }
 }
