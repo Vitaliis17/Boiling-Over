@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SafeCode", menuName = "ScriptableObject/Code")]
+[CreateAssetMenu(fileName = "SafeCode", menuName = "ScriptableObjects/Code")]
 public class CodeData : ScriptableObject
 {
     [SerializeField, Min(1)] private int _codeIndexAmount;

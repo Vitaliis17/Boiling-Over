@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39eb16c4588e9b438f4eff9ac9a067d, type: 3}
+  m_Name: SafeAudio
+  m_EditorClassIdentifier: Assembly-CSharp::SafeAudioData
+  _opening: {fileID: 8300000, guid: eba2cc3ade14dfb439e944867440c710, type: 3}
+  _rotation: {fileID: 8300000, guid: 4cc1368699138c944b58709f45edf006, type: 3}
+  _reset: {fileID: 8300000, guid: 5501e6d81f0781d468862ae2fe506e90, type: 3}

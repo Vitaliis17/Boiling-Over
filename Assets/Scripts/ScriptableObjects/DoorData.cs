@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DoorData", menuName = "ScriptableObject/DoorData")]
+[CreateAssetMenu(fileName = "DoorData", menuName = "ScriptableObjects/DoorData")]
 public class DoorData : ScriptableObject
 {
     [SerializeField] private float _closeRotatation;

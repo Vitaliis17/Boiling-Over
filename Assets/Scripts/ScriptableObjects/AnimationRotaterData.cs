@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AnimationRotaterData", menuName = "ScriptableObject/RotaterData")]
+[CreateAssetMenu(fileName = "AnimationRotaterData", menuName = "ScriptableObjects/RotaterData")]
 public class AnimationRotaterData : ScriptableObject
 {
     [SerializeField] private Vector3 _angle;

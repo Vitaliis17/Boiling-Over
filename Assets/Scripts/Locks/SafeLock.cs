@@ -9,7 +9,10 @@ public class SafeLock : MonoBehaviour
     private int _currentIndex;
 
     public event Action<int> Changed;
+
+    public event Action Turned;
     public event Action Opened;
+    public event Action Reseted;
 
     private void Awake()
         => ResetLock();
@@ -19,6 +22,8 @@ public class SafeLock : MonoBehaviour
         int sign = Math.Sign(direction);
 
         IncreaseCurrentValue(sign);
+
+        Turned?.Invoke();
     }
 
     public void Enter()
@@ -61,6 +66,10 @@ public class SafeLock : MonoBehaviour
     {
         const int NegativeSign = -1;
 
+        if (_currentValue == 0)
+            return;
+
         IncreaseCurrentValue(NegativeSign * _currentValue);
+        Reseted?.Invoke();
     }
 }

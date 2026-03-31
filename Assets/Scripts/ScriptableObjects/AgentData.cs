@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AgentData", menuName = "ScriptableObject/AgentData")]
+[CreateAssetMenu(fileName = "AgentData", menuName = "ScriptableObjects/AgentData")]
 public class AgentData : ScriptableObject
 {
     [SerializeField, Min(0)] private float _stoppingDistance;

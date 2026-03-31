@@ -16,6 +16,6 @@ public class Rotater
     {
         Vector3 endValue = _rigidbody.rotation.eulerAngles + _data.Angle * sign;
 
-        _rigidbody.DORotate(endValue, _data.Duration);
+        _rigidbody.DORotate(endValue, _data.Duration).SetEase(Ease.InOutQuad);
     }
 }

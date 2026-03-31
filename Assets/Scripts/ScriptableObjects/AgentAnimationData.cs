@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AgentAnimationData", menuName = "ScriptableObject/AnimationData/Agent")]
+[CreateAssetMenu(fileName = "AgentAnimationData", menuName = "ScriptableObjects/AnimationData/Agent")]
 public class AgentAnimationData : ScriptableObject
 {
     public int IdleHash { get; private set; }

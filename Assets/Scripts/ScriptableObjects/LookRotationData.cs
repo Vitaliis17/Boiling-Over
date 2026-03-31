@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "LookRotationData", menuName = "ScriptableObject/LookRotationData")]
+[CreateAssetMenu(fileName = "LookRotationData", menuName = "ScriptableObjects/LookRotationData")]
 public class LookRotationData : ScriptableObject
 {
     [SerializeField, Min(0)] private float _sensitivityX;
