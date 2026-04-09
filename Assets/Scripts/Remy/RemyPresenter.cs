@@ -16,7 +16,7 @@ public class RemyPresenter : MonoBehaviour
 
     private TimeInteractionStateMachine _timeInteractionMachine;
     private InteractingStateMachine _interactingStateMachine;
-    private AnimationStateMachine _animationStateMachine;
+    private AnimationStrategySelector _animationStateMachine;
     private TargetStateMachine _targetStateMachine;
 
     private InteractablePlacesPool _placePool;

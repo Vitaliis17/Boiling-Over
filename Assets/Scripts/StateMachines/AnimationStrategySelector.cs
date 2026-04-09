@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AnimationStateMachine
+public class AnimationStrategySelector
 {
     private readonly Dictionary<MovementActions, AnimationState> _animationStates;
     private int[] _layers;
 
     private AnimationState _currentState;
 
-    public AnimationStateMachine(Animator animator, AgentAnimationData animationData)
+    public AnimationStrategySelector(Animator animator, AgentAnimationData animationData)
     {
         _animationStates = new Dictionary<MovementActions, AnimationState>
         {
@@ -28,15 +28,16 @@ public class AnimationStateMachine
     {
         _currentState = _animationStates[state];
 
-        _currentState.Start(1);
-        _currentState.Start(2);
+        foreach (int layer in _layers)
+            _currentState.Start(layer);
     }
 
     private void GenerateLayers()
     {
         const int FirstIndex = 1;
+        const int LayerAmount = 2;
 
-        _layers = new int[3];
+        _layers = new int[LayerAmount];
 
         for (int i = 0; i < _layers.Length; i++)
             _layers[i] = i + FirstIndex;

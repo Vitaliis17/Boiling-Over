@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using UnityEngine;
 
 public class TimeInteractionStateMachine
 {
-    private Dictionary<Type, float> _interactionTimes;
-    private Timer _timer;
+    private readonly Dictionary<Type, float> _interactionTimes;
+    private readonly Timer _timer;
 
     private UniTask _task;
 
