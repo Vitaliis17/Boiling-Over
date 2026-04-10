@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8f5b6a878f461af45aacb38ed65a5398
+timeCreated: 1531250909
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: -1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 124055
+  packageName: Apartment Kit
+  packageVersion: 4.2
+  assetPath: Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic
+    Assets/BA_Concrete_01.mat
+  uploadId: 594248

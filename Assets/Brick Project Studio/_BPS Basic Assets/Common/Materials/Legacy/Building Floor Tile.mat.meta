@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d8b8102911dfd464190d1dcd0118ee8c
+timeCreated: 1530838729
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 124055
+  packageName: Apartment Kit
+  packageVersion: 4.2
+  assetPath: Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Building
+    Floor Tile.mat
+  uploadId: 594248

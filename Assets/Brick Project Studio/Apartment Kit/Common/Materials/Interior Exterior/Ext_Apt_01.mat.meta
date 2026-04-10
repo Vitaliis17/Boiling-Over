@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c44225e8d83384a44885195a34e3063a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 124055
+  packageName: Apartment Kit
+  packageVersion: 4.2
+  assetPath: Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior
+    Exterior/Ext_Apt_01.mat
+  uploadId: 594248

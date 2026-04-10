@@ -23,7 +23,10 @@ public abstract class Spawner<T> where T : Component
         => _pool.Release(element);
 
     private void Release(T component)
-        => component.gameObject.SetActive(false);
+    {
+        if (component != null)
+            component.gameObject.SetActive(false);
+    }
 
     private void Get(T component)
         => component.gameObject.SetActive(true);

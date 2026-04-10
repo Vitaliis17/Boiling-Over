@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5bc3d2613aaa5e447b8a3affc35841ba
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 124055
+  packageName: Apartment Kit
+  packageVersion: 4.2
+  assetPath: Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Brushed
+    Metal_Brass.mat
+  uploadId: 594248

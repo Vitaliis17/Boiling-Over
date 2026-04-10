@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -44,6 +45,10 @@ public class FootStepPresenter : MonoBehaviour
         try
         {
             await _timer.WaitSeconds(clip.length, _tokenSource.Token);
+        }
+        catch (OperationCanceledException)
+        {
+
         }
         finally
         {

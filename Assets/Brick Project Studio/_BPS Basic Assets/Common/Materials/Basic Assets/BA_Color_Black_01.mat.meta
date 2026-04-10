@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 99b92b0b8d7454845bd24732fe996bdb
+timeCreated: 1530852910
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 124055
+  packageName: Apartment Kit
+  packageVersion: 4.2
+  assetPath: Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic
+    Assets/BA_Color_Black_01.mat
+  uploadId: 594248
