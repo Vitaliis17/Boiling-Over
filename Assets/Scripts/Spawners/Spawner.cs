@@ -28,8 +28,8 @@ public abstract class Spawner<T> where T : Component
     private void Get(T component)
         => component.gameObject.SetActive(true);
 
-    private void Destroy(T component)
-        => Destroy(component);
+    private void DestroyElement(T component)
+        => Object.Destroy(component);
 
     private T Create()
         => Object.Instantiate(_prefab, _container);
