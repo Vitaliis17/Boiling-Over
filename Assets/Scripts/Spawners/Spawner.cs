@@ -13,7 +13,7 @@ public abstract class Spawner<T> where T : Component
         _prefab = prefab;
         _container = container;
 
-        _pool = new ObjectPool<T>(Create, Get, Release, Destroy);
+        _pool = new ObjectPool<T>(Create, Get, Release, DestroyElement);
     }
 
     public T GetElement()
