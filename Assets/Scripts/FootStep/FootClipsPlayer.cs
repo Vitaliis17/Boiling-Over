@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class FootClipsPlayer : MonoBehaviour
 {
@@ -7,12 +8,14 @@ public class FootClipsPlayer : MonoBehaviour
 
     private float _lastValue;
 
+    public event Action<AudioClip, Vector3, float> Stepped;
+
     private void Update()
     {
         float currentValue = _animator.GetFloat(AnimatorParameterHashes.FootStep);
 
         if (Mathf.Sign(currentValue) != Mathf.Sign(_lastValue))
-            AudioSource.PlayClipAtPoint(_clipsData.GetRandomClip(), transform.position, _clipsData.Volume);
+            Stepped?.Invoke(_clipsData.GetRandomClip(), transform.position, _clipsData.Volume);
 
         _lastValue = currentValue;
     }

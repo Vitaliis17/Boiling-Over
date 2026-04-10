@@ -3,11 +3,18 @@ using UnityEngine.Pool;
 
 public abstract class Spawner<T> where T : Component
 {
-    private ObjectPool<T> _pool;
-    private T _prefab;
+    private readonly T _prefab;
+    private readonly Transform _container;
 
-    public Spawner()
-        => _pool = new ObjectPool<T>(Create, Get, Release, Destroy);
+    private readonly ObjectPool<T> _pool;
+
+    public Spawner(T prefab, Transform container)
+    {
+        _prefab = prefab;
+        _container = container;
+
+        _pool = new ObjectPool<T>(Create, Get, Release, Destroy);
+    }
 
     public T GetElement()
         => _pool.Get();
@@ -25,5 +32,5 @@ public abstract class Spawner<T> where T : Component
         => Destroy(component);
 
     private T Create()
-        => Object.Instantiate(_prefab);
+        => Object.Instantiate(_prefab, _container);
 }
