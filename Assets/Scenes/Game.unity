@@ -5914,19 +5914,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 4445212295474871445, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
   m_PrefabInstance: {fileID: 6983908853571629746}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &226614411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226614404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf32de681d2ede45b02bbe204700514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Remy
-  _sight: {fileID: 1179626870}
 --- !u!114 &226614416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5953,6 +5940,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _clipsData: {fileID: 11400000, guid: fdeb6159ee3520341a94cf583f059c39, type: 2}
   _animator: {fileID: 226614409}
+--- !u!114 &226614423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226614404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2f3f5c3426bfe47aca496363e9e9cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  _sight: {fileID: 0}
 --- !u!4 &227800678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1129999413580534391, guid: edb02028d59ccac4ca6641a183fa7346, type: 3}
@@ -28287,7 +28287,7 @@ MonoBehaviour:
   - {fileID: 1321751603}
   - {fileID: 650604024}
   _agentAnimationData: {fileID: 11400000, guid: 7ed9e966c1bf4f1438797d4843d934bd, type: 2}
-  _remy: {fileID: 226614411}
+  _enemy: {fileID: 226614423}
   _sight: {fileID: 1179626870}
   _agentMovement: {fileID: 226614405}
   _pursuer: {fileID: 226614416}
@@ -54466,7 +54466,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 4e3cd30f34e87334b91fe54a7d4b494e, type: 2}
     - target: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       propertyPath: m_Name
-      value: Remy
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 7732889275934942959, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54514,13 +54514,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 226614411}
-    - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 226614416}
     - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 226614418}
+    - targetCorrespondingSourceObject: {fileID: 6925249248287521877, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 226614423}
     - targetCorrespondingSourceObject: {fileID: 4519512215323432807, guid: a5456c4b8666e694b8a2ee8b47099f7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 56530583}
