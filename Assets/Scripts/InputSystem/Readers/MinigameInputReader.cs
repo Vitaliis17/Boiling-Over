@@ -1,13 +1,20 @@
 using UnityEngine.InputSystem;
 using System;
+using R3;
 
 public class MinigameInputReader : InputReader
 {
     private InputSystem.MinigameActions _action;
 
-    public event Action<float> TurnPerformed;
-    public event Action EnterePerformed;
-    public event Action CancelPerformed;
+    private readonly Subject<float> _turned = new();
+
+    private readonly Subject<Unit> _entered = new();
+    private readonly Subject<Unit> _cancelled = new();
+
+    public Observable<float> Turned => _turned;
+
+    public Observable<Unit> Entered => _entered;
+    public Observable<Unit> Cancelled => _cancelled;
 
     private void Awake()
     {
@@ -31,12 +38,19 @@ public class MinigameInputReader : InputReader
         _action.Cancel.performed -= InvokeCancel;
     }
 
+    private void OnDestroy()
+    {
+        _turned?.Dispose();
+        _entered?.Dispose();
+        _cancelled?.Dispose();
+    }
+
     private void InvokeTurn(InputAction.CallbackContext context)
-        => TurnPerformed?.Invoke(_action.Turn.ReadValue<float>());
+        => _turned.OnNext(context.ReadValue<float>());
 
     private void InvokeEnter(InputAction.CallbackContext context)
-        => EnterePerformed?.Invoke();
+        => _entered.OnNext(Unit.Default);
 
     private void InvokeCancel(InputAction.CallbackContext context)
-        => CancelPerformed?.Invoke();
+        => _cancelled.OnNext(Unit.Default);
 }

@@ -1,25 +1,44 @@
 using UnityEngine;
-using System;
 using UnityEngine.InputSystem;
+using R3;
 
 public class PlayerInputReader : InputReader
 {
     private InputSystem.PlayerActions _action;
 
+    private readonly Subject<Vector2> _moved = new();
+    private readonly Subject<Vector2> _looked = new();
+
+    private readonly Subject<Unit> _jumped = new();
+    private readonly Subject<Unit> _interacted = new();
+    private readonly Subject<Unit> _paused = new();
+
     private Vector2 _moveDirection;
     private Vector2 _lookDirection;
 
-    public event Action<Vector2> MovePerformed;
-    public event Action<Vector2> LookPerformed;
+    public Observable<Vector2> Moved => _moved;
+    public Observable<Vector2> Looked => _looked;
 
-    public event Action JumpingPerformed;
-    public event Action InteractivePerformed;
-    public event Action PausePerformed;
+    public Observable<Unit> Jumped => _jumped;
+    public Observable<Unit> Interacted => _interacted;
+    public Observable<Unit> Paused => _paused;
 
     private void Awake()
     {
         _action = new InputSystem().Player;
         Map = _action;
+    }
+
+    private void Update()
+    {
+        _moveDirection = _action.Movement.ReadValue<Vector2>();
+        _lookDirection = _action.Look.ReadValue<Vector2>();
+    }
+
+    private void FixedUpdate()
+    {
+        _moved.OnNext(_moveDirection);
+        _looked.OnNext(_lookDirection);
     }
 
     private void OnEnable()
@@ -38,28 +57,22 @@ public class PlayerInputReader : InputReader
         _action.Pause.performed -= InvokePause;
     }
 
-
-    private void Update()
+    private void OnDestroy()
     {
-        _moveDirection = _action.Movement.ReadValue<Vector2>();
-        _lookDirection = _action.Look.ReadValue<Vector2>();
-    }
+        _moved?.Dispose();
+        _looked?.Dispose();
 
-    private void FixedUpdate()
-    {
-        if (_moveDirection.sqrMagnitude > 0)
-            MovePerformed?.Invoke(_moveDirection);
-
-        if (_lookDirection.sqrMagnitude > 0)
-            LookPerformed?.Invoke(_lookDirection);
+        _jumped?.Dispose();
+        _interacted?.Dispose();
+        _paused?.Dispose();
     }
 
     private void InvokeJumping(InputAction.CallbackContext context)
-        => JumpingPerformed?.Invoke();
+        => _jumped.OnNext(Unit.Default);
 
     private void InvokeInteractive(InputAction.CallbackContext context)
-        => InteractivePerformed?.Invoke();
+        => _interacted.OnNext(Unit.Default);
 
     private void InvokePause(InputAction.CallbackContext context)
-        => PausePerformed?.Invoke();
+        => _paused.OnNext(Unit.Default);
 }

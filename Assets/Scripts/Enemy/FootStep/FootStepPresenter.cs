@@ -1,6 +1,6 @@
-using System;
 using System.Threading;
 using UnityEngine;
+using R3;
 
 public class FootStepPresenter : MonoBehaviour
 {
@@ -20,17 +20,14 @@ public class FootStepPresenter : MonoBehaviour
         _timer = new();
     }
 
-    private void OnEnable()
-    {
-        _tokenSource = new();
+    private void Start()
+        => _clipsPlayer.Stepped.Subscribe(data => PlayFootStep(data.Item1, data.Item2, data.Item3)).AddTo(this);
 
-        _clipsPlayer.Stepped += PlayFootStep;
-    }
+    private void OnEnable()
+        => _tokenSource = new();
 
     private void OnDisable()
     {
-        _clipsPlayer.Stepped -= PlayFootStep;
-
         _tokenSource.Cancel();
         _tokenSource.Dispose();
     }

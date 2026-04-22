@@ -1,29 +1,36 @@
 using UnityEngine;
-using System;
+using R3;
 
 public class SafeLock : MonoBehaviour
 {
     [SerializeField] CodeData _code;
 
-    private int _currentValue;
     private int _currentIndex;
+    private int _currentValue;
 
-    public event Action<int> Changed;
+    private readonly Subject<int> _turned = new();
+    private readonly Subject<int> _reset = new();
+    private readonly Subject<Unit> _opened = new();
 
-    public event Action Turned;
-    public event Action Opened;
-    public event Action Reseted;
+    public Observable<int> Turned => _turned;
+    public Observable<int> Reset => _reset;
+    public Observable<Unit> Opened => _opened;
 
     private void Awake()
         => ResetLock();
 
-    public void Turn(float direction)
+    private void OnDestroy()
     {
-        int sign = Math.Sign(direction);
+        _turned?.Dispose();
+        _opened?.Dispose();
+        _reset?.Dispose();
+    }
 
-        IncreaseCurrentValue(sign);
+    public void Turn(int direction)
+    {
+        _currentValue += direction;
 
-        Turned?.Invoke();
+        _turned.OnNext(direction);
     }
 
     public void Enter()
@@ -36,7 +43,7 @@ public class SafeLock : MonoBehaviour
         }
 
         _currentIndex++;
-        ResetValue();
+        ResetCurrentValue();
 
         if (_code.CodeIndexAmount == _currentIndex)
             Open();
@@ -44,32 +51,27 @@ public class SafeLock : MonoBehaviour
 
     private void Open()
     {
-        Opened?.Invoke();
+        _opened.OnNext(Unit.Default);
 
         gameObject.SetActive(false);
     }
 
-    private void IncreaseCurrentValue(int value)
-    {
-        _currentValue += value;
-
-        Changed?.Invoke(value);
-    }
-
     private void ResetLock()
     {
-        ResetValue();
+        ResetCurrentValue();
         _currentIndex = 0;
     }
 
-    private void ResetValue()
+    private void ResetCurrentValue()
     {
+        const int NoValue = 0;
         const int NegativeSign = -1;
 
-        if (_currentValue == 0)
+        if (_currentValue == NoValue)
             return;
 
-        IncreaseCurrentValue(NegativeSign * _currentValue);
-        Reseted?.Invoke();
+        _reset.OnNext(NegativeSign * _currentValue);
+        _currentValue = NoValue;
+
     }
 }

@@ -1,16 +1,21 @@
 using UnityEngine;
-using System;
+using R3;
 
 public class WinnerSetter : MonoBehaviour
 {
     [SerializeField] private Transform _panel;
 
-    public event Action Activated;
+    private readonly Subject<Unit> _activated = new();
+
+    public Observable<Unit> Activated => _activated;
+
+    private void OnDestroy()
+        => _activated?.Dispose();
 
     public void Activate()
     {
         _panel.gameObject.SetActive(true);
 
-        Activated?.Invoke();
+        _activated.OnNext(Unit.Default);
     }
 }

@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using R3;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour, IRemyInteractable
@@ -12,39 +12,36 @@ public class Player : MonoBehaviour, IRemyInteractable
     [SerializeField, Min(0)] private float _speed;
     [SerializeField, Min(0)] private float _jumpingForce;
 
-    private Rigidbody _rigidbody;
-
     private Mover _mover;
     private Jumper _jumper;
     private LookRotater _rotater;
 
+    private DisposableBag _bag = new();
+
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.freezeRotation = true;
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.freezeRotation = true;
 
-        _mover = new(_speed, _rigidbody, transform);
-        _jumper = new(_jumpingForce, _rigidbody);
+        _mover = new(_speed, rigidbody, transform);
+        _jumper = new(_jumpingForce, rigidbody);
         _rotater = new(_rotationData, transform);
     }
 
     private void OnEnable()
     {
-        _inputReader.MovePerformed += _mover.Move;
-        _inputReader.JumpingPerformed += _jumper.Jump;
-        _inputReader.InteractivePerformed += _interacter.Interact;
+        _inputReader.Moved.Subscribe(direction => _mover.Move(direction)).AddTo(ref _bag);
+        _inputReader.Looked.Subscribe(direction => _rotater.RotateX(direction)).AddTo(ref _bag);
 
-        _inputReader.LookPerformed += _rotater.RotateX;
+        _inputReader.Jumped.Subscribe(_ => _jumper.Jump()).AddTo(ref _bag);
+        _inputReader.Interacted.Subscribe(_ => _interacter.Interact()).AddTo(ref _bag);
     }
 
     private void OnDisable()
-    {
-        _inputReader.MovePerformed -= _mover.Move;
-        _inputReader.JumpingPerformed -= _jumper.Jump;
-        _inputReader.InteractivePerformed -= _interacter.Interact;
+        => _bag.Clear();
 
-        _inputReader.LookPerformed -= _rotater.RotateX;
-    }
+    private void OnDestroy()
+        => _bag.Dispose();
 
     public void Interact()
         => Destroy(gameObject);

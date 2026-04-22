@@ -1,4 +1,6 @@
 using UnityEngine;
+using R3;
+using System;
 
 public class SafeLockPresenter : MonoBehaviour
 {
@@ -14,27 +16,23 @@ public class SafeLockPresenter : MonoBehaviour
     private void Awake()
         => _rotater = new(_rotaterData, _rigidbody);
 
-    private void OnEnable()
+    private void Start()
     {
-        _inputReader.EnterePerformed += _lock.Enter;
-        _inputReader.TurnPerformed += _lock.Turn;
+        _lock.Turned.Subscribe(sign =>
+        {
+            _rotater.Rotate(sign);
+            _audioPlayer.PlayRotation();
+        }).AddTo(this);
 
-        _lock.Changed += _rotater.Rotate;
+        _lock.Reset.Subscribe(rotateAmount =>
+        {
+            _rotater.Rotate(rotateAmount);
+            _audioPlayer.PlayReset();
+        }).AddTo(this);
 
-        _lock.Turned += _audioPlayer.PlayRotation;
-        _lock.Reseted += _audioPlayer.PlayReset;
-        _lock.Opened += _audioPlayer.PlayOpen;
-    }
+        _lock.Opened.Subscribe(_ => _audioPlayer.PlayOpen()).AddTo(this);
 
-    private void OnDisable()
-    {
-        _inputReader.EnterePerformed -= _lock.Enter;
-        _inputReader.TurnPerformed -= _lock.Turn;
-
-        _lock.Changed -= _rotater.Rotate;
-
-        _lock.Turned -= _audioPlayer.PlayRotation;
-        _lock.Reseted -= _audioPlayer.PlayReset;
-        _lock.Opened -= _audioPlayer.PlayOpen;
+        _inputReader.Entered.Subscribe(_ => _lock.Enter()).AddTo(this);
+        _inputReader.Turned.Select(direction => Math.Sign(direction)).Subscribe(direction => _lock.Turn(direction)).AddTo(this);
     }
 }

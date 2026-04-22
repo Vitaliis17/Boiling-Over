@@ -12,7 +12,7 @@ public class InteractablePlacesPool
             _places.Add(places[i]);
     }
 
-    public InteractablePlace ActivatePlace()
+    public InteractablePlace Get()
     {
         InteractablePlace place = GetRandomPlace();
 

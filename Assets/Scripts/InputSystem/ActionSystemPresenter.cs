@@ -1,4 +1,5 @@
 using UnityEngine;
+using R3;
 
 public class ActionSystemPresenter : MonoBehaviour
 {
@@ -12,18 +13,11 @@ public class ActionSystemPresenter : MonoBehaviour
     private void Awake()
         => _stateMachine = new(_readers);
 
-    private void OnEnable()
+    private void Start()
     {
-        _interactiveObject.Interacting += SetMinigame;
-        _minigameInputReader.CancelPerformed += SetPlayer;
-        _lock.Opened += SetPlayer;
-    }
-
-    private void OnDisable()
-    {
-        _interactiveObject.Interacting -= SetMinigame;
-        _minigameInputReader.CancelPerformed -= SetPlayer;
-        _lock.Opened -= SetPlayer;
+        _lock.Opened.Subscribe(_ => SetPlayer()).AddTo(this);
+        _interactiveObject.Interacting.Subscribe(_ => SetMinigame()).AddTo(this); ;
+        _minigameInputReader.Cancelled.Subscribe(_ => SetPlayer()).AddTo(this);
     }
 
     private void SetPlayer()

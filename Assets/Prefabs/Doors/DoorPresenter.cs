@@ -1,4 +1,5 @@
 using UnityEngine;
+using R3;
 
 public class DoorPresenter : MonoBehaviour
 {
@@ -16,17 +17,12 @@ public class DoorPresenter : MonoBehaviour
 
     private void OnEnable()
     {
-        _interactiveObject.Interacting += _doorStateMachine.ChangeState;
+        _interactiveObject.Interacting.Subscribe(_ => _doorStateMachine.ChangeState()).AddTo(this);
 
-        _doorStateMachine.Opened += _door.Open;
-        _doorStateMachine.Closed += _door.Close;
+        _doorStateMachine.Opened.Subscribe(_ => _door.Open()).AddTo(this);
+        _doorStateMachine.Closed.Subscribe(_ => _door.Close()).AddTo(this);
     }
 
-    private void OnDisable()
-    {
-        _interactiveObject.Interacting -= _doorStateMachine.ChangeState;
-
-        _doorStateMachine.Opened -= _door.Open;
-        _doorStateMachine.Closed -= _door.Close;
-    }
+    private void OnDestroy()
+        => _doorStateMachine?.Dispose();
 }

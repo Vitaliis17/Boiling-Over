@@ -1,4 +1,5 @@
 using UnityEngine;
+using R3;
 
 public class WinnerPresenter : MonoBehaviour
 {
@@ -8,19 +9,15 @@ public class WinnerPresenter : MonoBehaviour
     [SerializeField] private CursorLocker _cursorLocker;
     [SerializeField] private TimeSwitcher _timeSwitcher;
 
-    private void OnEnable()
+    private void Start()
     {
-        _checker.PlayerTriggered += _winnerSetter.Activate;
+        _checker.Triggered.Subscribe(_ => _winnerSetter.Activate()).AddTo(this);
 
-        _winnerSetter.Activated += _cursorLocker.Unlock;
-        _winnerSetter.Activated += _timeSwitcher.SetMin;
-    }
-
-    private void OnDisable()
-    {
-        _checker.PlayerTriggered -= _winnerSetter.Activate;
-
-        _winnerSetter.Activated -= _cursorLocker.Unlock;
-        _winnerSetter.Activated -= _timeSwitcher.SetMin;
+        _winnerSetter.Activated.Subscribe(_ =>
+        {
+            _cursorLocker.Unlock();
+            _timeSwitcher.SetMin();
+        }
+        ).AddTo(this);
     }
 }

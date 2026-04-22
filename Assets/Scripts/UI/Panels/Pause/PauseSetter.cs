@@ -1,53 +1,29 @@
 using UnityEngine;
-using System;
+using R3;
 
-public class PauseSetter : MonoBehaviour 
+public class PauseSetter : MonoBehaviour
 {
     [SerializeField] private Transform _panel;
-    
     [SerializeField] private PlayerInputReader _inputReader;
 
-    private bool _isPause;
+    private readonly ReactiveProperty<bool> _isPause = new(false);
 
-    public event Action Activated;
-    public event Action Deactivated;
+    public Observable<bool> PauseStateChanged => _isPause;
 
-    private void Awake()
-        => _isPause = false;
+    private void Start()
+        => _inputReader.Paused.Subscribe(_ => SwitchState()).AddTo(this);
 
-    private void OnEnable()
-        => _inputReader.PausePerformed += SwitchState;
-
-    private void OnDisable()
-        => _inputReader.PausePerformed -= SwitchState;
-
-    public void Deactivate()
-    {
-        _isPause = false;
-        SetPanelActivity();
-
-        Deactivated?.Invoke();
-    }
-
-    private void Activate()
-    {
-        _isPause = true;
-        SetPanelActivity();
-
-        Activated?.Invoke();
-    }
+    private void OnDestroy()
+        => _isPause?.Dispose();
 
     private void SwitchState()
     {
-        if (_isPause)
-        {
-            Deactivate();
-            return;
-        }
+        bool reverseActivity = _isPause.Value == false;
+        _isPause.Value = reverseActivity;
 
-        Activate();
+        SetPanelActivity();
     }
 
     private void SetPanelActivity()
-        => _panel.gameObject.SetActive(_isPause);
+        => _panel.gameObject.SetActive(_isPause.Value);
 }

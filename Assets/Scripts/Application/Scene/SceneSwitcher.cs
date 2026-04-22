@@ -1,41 +1,47 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using System.Collections;
+using R3;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class SceneSwitcher : MonoBehaviour
 {
-    public event Action<float> ProgressUpdated;
+    private readonly ReactiveProperty<float> _progress = new();
 
-    private Coroutine _coroutine;
+    private CancellationTokenSource _source;
+
+    public Observable<float> ProgressUpdated => _progress;
+
+    private void OnEnable()
+        => _source = new();
 
     private void OnDisable()
     {
-        if(_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
+        _source?.Cancel();
+        _source?.Dispose();
     }
 
+    private void OnDestroy()
+        => _progress?.Dispose();
+
     public void LoadGame()
-        => _coroutine = StartCoroutine(LoadSceneAsync(SceneNames.Game));
+        => LoadSceneAsync(SceneNames.Game, _source.Token).Forget();
 
     public void LoadMenu()
-        => _coroutine = StartCoroutine(LoadSceneAsync(SceneNames.Menu));
+        => LoadSceneAsync(SceneNames.Menu, _source.Token).Forget();
 
-    private IEnumerator LoadSceneAsync(SceneNames scene)
+    private async UniTaskVoid LoadSceneAsync(SceneNames scene, CancellationToken token)
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync((int)scene);
+        const int NoProgress = 0;
 
-        float progress;
+        AsyncOperation operation = SceneManager.LoadSceneAsync((int)scene);
+        _progress.Value = NoProgress;
 
         while(operation.isDone == false)
         {
-            progress = Mathf.Clamp01(operation.progress / 0.9f);
-            ProgressUpdated?.Invoke(progress);
+            _progress.Value = Mathf.Clamp01(operation.progress / 0.9f);
 
-            yield return null;
+            await UniTask.NextFrame(token).SuppressCancellationThrow();
         }
     }
 }

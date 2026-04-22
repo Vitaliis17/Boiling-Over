@@ -1,11 +1,12 @@
 using UnityEngine;
-using System;
+using R3;
 
 public class InteractiveObject : MonoBehaviour, IInteractable
 {
+    private readonly Subject<Unit> _interacting = new();
     private CustomeLayerMasks _mask;
 
-    public event Action Interacting;
+    public Observable<Unit> Interacting => _interacting;
 
     private void Awake()
     {
@@ -14,6 +15,9 @@ public class InteractiveObject : MonoBehaviour, IInteractable
         gameObject.layer = (int)_mask;
     }
 
+    private void OnDestroy()
+        => _interacting?.Dispose();
+
     public void Interact()
-        => Interacting?.Invoke();
+        => _interacting.OnNext(Unit.Default);
 }

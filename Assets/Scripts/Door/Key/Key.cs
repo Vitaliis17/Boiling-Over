@@ -1,15 +1,20 @@
-using System;
 using UnityEngine;
+using R3;
 
 public class Key : MonoBehaviour, IInteractable
 {
     [SerializeField] private KeyData _data;
 
-    public event Action<Key> Using;
+    private readonly Subject<Key> _using = new();
+
+    public Observable<Key> Using => _using;
+
+    private void OnDestroy()
+        => _using?.Dispose();
 
     public void Interact()
     {
-        Using?.Invoke(this);
+        _using.OnNext(this);
 
         gameObject.SetActive(false);
     }

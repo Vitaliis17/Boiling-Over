@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using R3;
 
-public class DoorStateMachine
+public class DoorStateMachine : IDisposable
 {
-    private Dictionary<DoorStates, Action> _states;
+    private readonly Subject<Unit> _opened = new();
+    private readonly Subject<Unit> _closed = new();
+
+    private readonly Dictionary<DoorStates, Action> _states;
 
     private DoorStates _currentState;
-
-    public event Action Opened;
-    public event Action Closed;
 
     public DoorStateMachine()
     {
@@ -19,6 +20,15 @@ public class DoorStateMachine
         };
 
         Reset();
+    }
+
+    public Observable<Unit> Opened => _opened;
+    public Observable<Unit> Closed => _closed;
+
+    public void Dispose()
+    {
+        _opened?.Dispose();
+        _closed?.Dispose();
     }
 
     public void ChangeState()
@@ -42,8 +52,8 @@ public class DoorStateMachine
         => _states[_currentState]?.Invoke();
 
     private void InvokeOpen()
-        => Opened?.Invoke();
+        => _opened.OnNext(Unit.Default);
 
     private void InvokeClose()
-        => Closed?.Invoke();
+        => _closed.OnNext(Unit.Default);
 }

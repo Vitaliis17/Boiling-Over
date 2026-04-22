@@ -1,26 +1,26 @@
 using UnityEngine;
-using System;
+using R3;
 
 [RequireComponent(typeof(Collider))]
 public class WinChecker : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
 
-    private Collider _collider;
-
-    public event Action PlayerTriggered;
+    private readonly Subject<Unit> _triggered = new();
+    
+    public Observable<Unit> Triggered => _triggered;
 
     private void Awake()
-    {
-        _collider = GetComponent<Collider>();
-        _collider.isTrigger = true;
-    }
+        => GetComponent<Collider>().isTrigger = true;
 
     private void OnTriggerEnter(Collider other)
     {
         if (1 << other.gameObject.layer != _layerMask.value)
             return;
 
-        PlayerTriggered?.Invoke();
+        _triggered.OnNext(Unit.Default);
     }
+
+    private void OnDestroy()
+        => _triggered?.Dispose();
 }

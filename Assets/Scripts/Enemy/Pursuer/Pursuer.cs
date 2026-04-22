@@ -1,30 +1,47 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
-using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using R3;
 
 public class Pursuer : MonoBehaviour
 {
+    private readonly Subject<Unit> _reached = new();
+    private readonly Subject<Vector3> _transfering = new();
+    
     private NavMeshAgent _agent;
-    private Coroutine _coroutine;
 
     private Vector3 _targetPosition;
     private bool _havePath;
 
-    public event Action Reached;
-    public event Action<Vector3> Transfering;
+    private CancellationTokenSource _source;
+
+    public Observable<Unit> Reached => _reached;
+    public Observable<Vector3> Transfering => _transfering;
 
     private void Awake()
         => _havePath = false;
 
+    private void OnEnable()
+        => _source = new();
+
     private void OnDisable()
-        => StopCoroutine(_coroutine);
+    {
+        _source?.Cancel();
+        _source?.Dispose();
+    }
+
+    private void OnDestroy()
+    {
+        _reached?.Dispose();
+        _transfering?.Dispose();
+    }
 
     public void Initialize(NavMeshAgent agent)
     {
         _agent = agent;
 
-        _coroutine = StartCoroutine(CheckPathStatus());
+        Check(_source.Token).Forget();
     }
 
     public void SetDestination(Vector3 destination)
@@ -36,11 +53,11 @@ public class Pursuer : MonoBehaviour
     private void UpdatePathStatus()
         => _havePath = _agent.pathPending == false && _agent.remainingDistance > _agent.stoppingDistance;
 
-    private IEnumerator CheckPathStatus()
+    private async UniTaskVoid Check(CancellationToken token)
     {
-        const float WaitingTime = 0.1f;
+        const int WaitingMilliseconds = 100;
 
-        WaitForSeconds waiting = new(WaitingTime);
+        bool isCancel = false;
 
         while (enabled)
         {
@@ -48,13 +65,19 @@ public class Pursuer : MonoBehaviour
 
             if (_havePath == false)
             {
-                Reached?.Invoke();
-                Transfering?.Invoke(_targetPosition);
+                _reached.OnNext(Unit.Default);
+                _transfering.OnNext(_targetPosition);
 
-                yield return new WaitWhile(() => _havePath == false);
+                isCancel = await UniTask.WaitWhile(() => _havePath == false, cancellationToken: token).SuppressCancellationThrow();
+
+                if (isCancel)
+                    return;
             }
 
-            yield return waiting;
+            isCancel = await UniTask.Delay(WaitingMilliseconds, cancellationToken: token).SuppressCancellationThrow();
+
+            if(isCancel)
+                return;
         }
     }
 }

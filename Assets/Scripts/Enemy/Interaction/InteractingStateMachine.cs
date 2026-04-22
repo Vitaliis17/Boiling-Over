@@ -1,10 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using R3;
 
-public class InteractingStateMachine
+public class InteractingStateMachine : IDisposable
 {
-    private Dictionary<Type, MovementActions> _actions;
+    private readonly Subject<Quaternion> _rotationChanged = new();
+    private readonly Subject<MovementActions> _stateChanged = new();
+
+    private readonly Dictionary<Type, MovementActions> _actions;
 
     public InteractingStateMachine()
     {
@@ -16,14 +20,20 @@ public class InteractingStateMachine
         };
     }
 
-    public event Action<Quaternion> RotationChanged;
-    public event Action<MovementActions> StateChanged;
+    public Observable<Quaternion> RotationChanged => _rotationChanged;
+    public Observable<MovementActions> StateChanged => _stateChanged;
 
     public void Interact(IRemyInteractable interactable)
     {
         interactable.Interact();
 
-        StateChanged?.Invoke(_actions[interactable.GetType()]);
-        RotationChanged?.Invoke(((MonoBehaviour)interactable).transform.rotation);
+        _stateChanged.OnNext(_actions[interactable.GetType()]);
+        _rotationChanged.OnNext(((MonoBehaviour)interactable).transform.rotation);
+    }
+
+    public void Dispose()
+    {
+        _rotationChanged?.Dispose();
+        _stateChanged?.Dispose();
     }
 }

@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AnimationStrategySelector
+public class AnimationSelector
 {
     private readonly Dictionary<MovementActions, AnimationState> _animationStates;
     private int[] _layers;
 
     private AnimationState _currentState;
 
-    public AnimationStrategySelector(Animator animator, AgentAnimationData animationData)
+    public AnimationSelector(Animator animator, AgentAnimationData animationData)
     {
         _animationStates = new Dictionary<MovementActions, AnimationState>
         {
