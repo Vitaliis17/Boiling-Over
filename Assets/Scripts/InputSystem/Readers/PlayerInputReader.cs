@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using R3;
+using Cysharp.Threading.Tasks;
 
 public class PlayerInputReader : InputReader
 {
